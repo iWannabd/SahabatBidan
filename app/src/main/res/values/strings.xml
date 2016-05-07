@@ -3,5 +3,43 @@
     <string name="title_activity_login">Login</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_data_pasien">DataPasien</string>
+    <string name="title_activity_data_pasien">Data Pasien</string>
+    <string name="title_activity_pemeriksaan">Pemeriksaan</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="keadaan_umum">
+        <item>Baik</item>
+        <item>Sedang</item>
+        <item>Tanpa Anemik</item>
+    </string-array>
+
+    <string-array name="presentasi_janin">
+        <item>Tidak Terdeteksi</item>
+        <item>Lintang</item>
+        <item>Sungsang</item>
+        <item>Punggung Kiri</item>
+        <item>Punggung Kanan</item>
+        <item>Kepala</item>
+    </string-array>
+
+    <string-array name="gerak_janin">
+        <item>Tidak Terdeteksi</item>
+        <item>kurang dari 4 kali</item>
+        <item>antara 4 hingga 10 kali</item>
+        <item>lebih dari 10 kali</item>
+    </string-array>
+
+    <string-array name="jarak_kehamilan">
+        <item>Kurang dari 2 tahun</item>
+        <item>Lebih dari 2 tahun dan Kurang dari 10 tahun</item>
+        <item>Lebih dari 10 tahun</item>
+    </string-array>
+
+    <string-array name="jarak_kehamilan_value">
+        <item>2</item>
+        <item>2-10</item>
+        <item>10</item>
+    </string-array>
 </resources>

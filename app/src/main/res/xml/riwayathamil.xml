@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <com.example.azaqo.sahabatbidan.DatePickerDialog
+        android:key="hpmt"
+        android:title="Hari Pertama Haid Terahir"
+        android:summary="Kapan hari pertama haid terahir"
+        />
+    <com.example.azaqo.sahabatbidan.NumberPickerDialog
+        android:key="hamilke"
+        android:title="Hamil Ke"
+        android:summary="saat ini sudah hamil yang keberapa"
+        />
+    <com.example.azaqo.sahabatbidan.NumberPickerDialog
+        android:key="jumlahir"
+        android:title="Jumlah Melahirkan"
+        android:summary="sudah melahirkan berapa kali"
+        />
+    <com.example.azaqo.sahabatbidan.NumberPickerDialog
+        android:key="jumgugur"
+        android:title="Hamil Ke"
+        android:summary="saat ini sudah hamil yang keberapa"
+        />
+    <ListPreference
+        android:entryValues="@array/jarak_kehamilan_value"
+        android:entries="@array/jarak_kehamilan"
+        android:title="Jarak Kehamilan"
+        android:key="jarakHamil"
+        android:summary="Dengan kehamilan sebelumnya"/>
+
+    <PreferenceCategory
+        android:title="Pernah Mengalami Persalinan"
+        android:key="persalinan_sebelumnya">
+
+        <EditTextPreference
+            android:title="Normal"
+            android:summary="pada anak keberapa saja melahirkan dengan normal"
+            android:key="lahirnormal"
+            />
+
+        <EditTextPreference
+            android:title="Vaccum"
+            android:summary="pada anak keberapa saja melahirkan dengan vaccum"
+            android:key="lahirvaccum"
+            />
+
+        <EditTextPreference
+            android:title="Sesar"
+            android:summary="pada anak keberapa saja melahirkan dengan sesar"
+            android:key="lahirsesar"
+            />
+
+        <EditTextPreference
+            android:title="Prematur"
+            android:summary="pada anak keberapa saja melhirkan prematur"
+            android:key="lahirprematur"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Penolong Persalinan"
+        android:key="penolong_persalinan"
+        >
+
+        <CheckBoxPreference
+            android:title="Bidan"
+            android:key="bidaan"/>
+
+        <CheckBoxPreference
+            android:title="Dukun"
+            android:key="dukun"/>
+
+        <CheckBoxPreference
+            android:title="Doktor"
+            android:key="lainnya"/>
+
+        <CheckBoxPreference
+            android:title="Lainnya"
+            android:key="lainnya"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Berat bayi"
+        android:key="berat_bayi">
+
+        <EditTextPreference
+            android:title="Kurang dari 2,5 Kg"
+            android:summary="pada anak keberapa bayi lahir dengan berat kurang 2,5 Kg"
+            android:key="less25"
+            />
+
+        <EditTextPreference
+            android:title="Antara 2,5 Kg sampai 4 Kg"
+            android:summary="pada anak keberapa bayi lahir dengan berat antara 2,5 Kg - 4 Kg"
+            android:key="between25and4"
+            />
+
+        <EditTextPreference
+            android:title="Lebih dari 4 Kg"
+            android:summary="pada anak keberapa bayi lahir dengan lebih berat 4 Kg"
+            android:key="over4"
+            />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

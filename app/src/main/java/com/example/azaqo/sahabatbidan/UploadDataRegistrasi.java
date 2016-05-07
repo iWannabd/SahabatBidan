@@ -9,12 +9,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
 /**
  * Created by azaqo on 28/04/2016.
  */
@@ -46,7 +40,7 @@ public class UploadDataRegistrasi extends AsyncTask<String[],Void,String> {
     protected String doInBackground(String[]... params) {
         Okdeh okdeh = new Okdeh();
         try {
-            return okdeh.doPostRequestDataDasar(url, params[0], params[1]);
+            return okdeh.doPostRequestData(url, params[0], params[1]);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,27 +73,4 @@ public class UploadDataRegistrasi extends AsyncTask<String[],Void,String> {
         }
     }
 
-    public class Okdeh {
-        OkHttpClient client = new OkHttpClient();
-        // code request code here
-        String doPostRequestDataDasar(String url, String[] keys, String[] values) throws IOException {
-            MultipartBody.Builder feb = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM);
-
-            for (int i = 0; i < values.length; i++) {
-                feb.addFormDataPart(keys[i],values[i]);
-            }
-
-            RequestBody febs = feb.build();
-
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(febs)
-                    .build();
-
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        }
-
-    }
 }

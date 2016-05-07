@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Keluhan Trisemester 1"
+        android:summary="keltris1">
+
+        <CheckBoxPreference
+            android:title="Mual Muntah"
+            android:key="mualmuntah1"/>
+
+        <CheckBoxPreference
+            android:title="Susah BAB"
+            android:key="bab1"/>
+
+        <CheckBoxPreference
+            android:title="Keputihan"
+            android:key="putih1"/>
+
+        <CheckBoxPreference
+            android:title="Pusing"
+            android:key="pusing1"/>
+
+        <CheckBoxPreference
+            android:title="Mudah Lelah"
+            android:key="lelah1"/>
+
+        <CheckBoxPreference
+            android:title="Rasa Terbakar / Panas Pada dada"
+            android:key="bakar1"/>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Keluhan Trisemester 2"
+        android:summary="keltris2">
+
+        <CheckBoxPreference
+            android:title="Pusing"
+            android:key="pusing2"/>
+
+        <CheckBoxPreference
+            android:title="Nyeri Perut Bagian Bawah"
+            android:key="nyeriperut2"/>
+
+        <CheckBoxPreference
+            android:title="Nyeri Punggung"
+            android:key="punggung2"/>
+
+        <CheckBoxPreference
+            android:title="Keputihan"
+            android:key="putih2"/>
+
+        <CheckBoxPreference
+            android:title="Susah BAB"
+            android:key="bab2"/>
+
+        <CheckBoxPreference
+            android:title="Sering Berkemih"
+            android:key="kemih2"/>
+
+        <CheckBoxPreference
+            android:title="Gerak Janin Berkurang"
+            android:key="gerakjanin2"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Keluhan Trisemester 3"
+        android:summary="keltris3">
+
+        <CheckBoxPreference
+            android:title="Susah BAB"
+            android:key="bab3"/>
+
+        <CheckBoxPreference
+            android:title="Kram pada kaki"
+            android:key="kram3"/>
+
+        <CheckBoxPreference
+            android:title="Nyeri perut bagian bawah"
+            android:key="nyeriperut3"/>
+
+        <CheckBoxPreference
+            android:title="Gerak janin berkurang"
+            android:key="gerakjanin3"/>
+
+        <CheckBoxPreference
+            android:title="Sering berkemih"
+            android:key="kemih3"/>
+
+        <CheckBoxPreference
+            android:title="Bengkak kaki"
+            android:key="bengkakkaki3"/>
+
+        <CheckBoxPreference
+            android:title="Keputihan"
+            android:key="putih3"/>
+
+        <CheckBoxPreference
+            android:title="Sulit tidur"
+            android:key="sulittidur3"/>
+
+        <CheckBoxPreference
+            android:title="Sesak napas"
+            android:key="sesaknapas3"/>
+
+        <CheckBoxPreference
+            android:title="Nyeri pinggang"
+            android:key="nyeripinggang3"/>
+
+        <CheckBoxPreference
+            android:title="Keluar darah dari kemaluan"
+            android:key="darah3"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

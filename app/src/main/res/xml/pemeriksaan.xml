@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Pemeriksaan"
+        android:key="pemeriksaan" >
+
+    <ListPreference
+        android:entryValues="@array/keadaan_umum"
+        android:entries="@array/keadaan_umum"
+        android:title="Keadaan Umum"
+        android:key="keadaanumum"/>
+
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        android:title="Suhu Tubuh"
+        android:summary="dalam satuan derajat celcius"
+        android:key="subuh"
+        />
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        android:title="Tekanan Darah"
+        android:summary="Cm"
+        android:key="tekdarcm"/>
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        android:title="Tekanan Darah"
+        android:summary="mmHg"
+        android:key="tekdarmmhg"/>
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        android:title="Berat Badan"
+        android:summary="dalam satuan kilogram"
+        android:key="tekdarcm"/>
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        android:title="LILA"
+        android:summary="dalam satuan centimeter"
+        android:key="lila"/>
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        android:title="TFU"
+        android:summary="dalam satuan centimeter"
+        android:key="tfu"/>
+
+    <EditTextPreference
+        android:inputType="text"
+        android:title="Pemeriksaan HB"
+        android:summary="dalam satuan centimeter"
+        android:key="periksaHB"/>
+
+    <EditTextPreference
+        android:inputType="text"
+        android:title="Golongan Darah"
+        android:summary="dalam satuan centimeter"
+        android:key="periksagoldar"/>
+
+    <ListPreference
+        android:entryValues="@array/presentasi_janin"
+        android:entries="@array/presentasi_janin"
+        android:title="Presentasi Janin"
+        android:key="presenjanin"/>
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        android:title="Detak jantung janin"
+        android:summary="jika terdeteksi masukkan dalam satuan bpm"
+        android:key="jantungjanin"/>
+
+    <ListPreference
+        android:entryValues="@array/gerak_janin"
+        android:entries="@array/gerak_janin"
+        android:title="Gerak Janin"
+        android:summary="dalam dua jam terahir"
+        android:key="gerakjanin2jam"/>
+
+    <ListPreference
+        android:entryValues="@array/keadaan_umum"
+        android:entries="@array/keadaan_umum"
+        android:title="Keadaan Umum Ibu"
+        android:key="keadaanumumibu"/>
+
+    <ListPreference
+        android:entryValues="@array/keadaan_umum"
+        android:entries="@array/keadaan_umum"
+        android:title="Keadaan Umum Janin"
+        android:key="keadaanumumjanin"/>
+
+    <EditTextPreference
+        android:inputType="textLongMessage"
+        android:title="Saran"
+        android:key="saran"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
