@@ -18,7 +18,7 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     ActivityPemeriksaan activityPemeriksaan;
     FragmentDataLengkapIbu detil;
     Context context;
-    HashMap<String,String> data;
+    HashMap<String,String> data = null;
     String result = "{}";
     String url;
 
@@ -51,14 +51,13 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     protected Void doInBackground(String[]... params) {
         Okdeh ok = new Okdeh();
         try {
-            result = ok.doPostRequestData(url, params[0],params[1]);
+            if (data!=null) result = ok.doPostRequestData(url,data);
+            else result = ok.doPostRequestData(url, params[0],params[1]);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
-
-
 
     @Override
     protected void onPostExecute(Void aVoid) {

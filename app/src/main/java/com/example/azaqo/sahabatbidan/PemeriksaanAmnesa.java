@@ -157,7 +157,6 @@ public class  PemeriksaanAmnesa extends Fragment {
                 {
                     Log.d("PHP", "onClick: "+entry.getKey() +" : "+entry.getValue());
                 }
-
                 new HubunganAtas(getContext(),"http://sahabatbundaku.org/request_android/riwayat_hamil.php",data)
                 .execute();
 

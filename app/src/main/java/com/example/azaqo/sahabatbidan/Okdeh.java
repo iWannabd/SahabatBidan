@@ -37,7 +37,7 @@ public class Okdeh {
         return response.body().string();
     }
 
-    String doPostRequestData(HashMap<String,String> data) throws IOException {
+    String doPostRequestData(String url,HashMap<String,String> data) throws IOException {
         MultipartBody.Builder feb = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
 
