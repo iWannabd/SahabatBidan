@@ -21,6 +21,7 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     HashMap<String,String> data = null;
     String result = "{}";
     String url;
+    String flag = ""; //sebagai penanda kelas digunakan oleh kelas mana
 
     public HubunganAtas(DataPasien activity, Context context, String url) {
         this.activity = activity;
@@ -36,10 +37,11 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
         activity = null;
     }
 
-    public HubunganAtas(Context context, String url,HashMap<String,String> data) {
+    public HubunganAtas(Context context, String url,HashMap<String,String> data,String flag) {
         this.context = context;
         this.url = url;
         this.data = data;
+        this.flag = flag;
     }
 
     @Override
@@ -63,10 +65,9 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         try {
-            Log.d("PHP", "onPostExecute:"+result);
             if (activity!=null) activity.setDatapasien(result);
             if (detil!=null) detil.setDatapasien(result);
-            if (activityPemeriksaan!=null) Toast.makeText(context,result,Toast.LENGTH_LONG).show();
+            if (flag.equals("riwayat")) Toast.makeText(context,result,Toast.LENGTH_LONG).show();
             Log.d("PHP", "onPostExecute:"+result);
         } catch (JSONException e) {
             e.printStackTrace();

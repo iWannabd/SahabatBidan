@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 
@@ -95,6 +96,19 @@ public class  PemeriksaanAmnesa extends Fragment {
     }
 
     public View periksariwayat(View view){
+        final EditText[] handler = {
+                ((EditText) view.findViewById(R.id.hpmt)),
+                ((EditText) view.findViewById(R.id.hamilke)),
+                ((EditText) view.findViewById(R.id.jumlahir)),
+                ((EditText) view.findViewById(R.id.jarakhamil)),
+                ((EditText) view.findViewById(R.id.normal)),
+                ((EditText) view.findViewById(R.id.sesar)),
+                ((EditText) view.findViewById(R.id.vaccum)),
+                ((EditText) view.findViewById(R.id.prematur)),
+                ((EditText) view.findViewById(R.id.bb1)),
+                ((EditText) view.findViewById(R.id.bb2)),
+                ((EditText) view.findViewById(R.id.bb3)),
+        };
         final EditText hpmt = (EditText) view.findViewById(R.id.hpmt);
         final Button submit = (Button) view.findViewById(R.id.btnSubmitRiwayat);
         hpmt.setOnClickListener(new View.OnClickListener() {
@@ -120,19 +134,11 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (CheckBox) view.findViewById(R.id.p4),
         };
 
-        final EditText[] handler = {
-                ((EditText) view.findViewById(R.id.hpmt)),
-                ((EditText) view.findViewById(R.id.hamilke)),
-                ((EditText) view.findViewById(R.id.jumlahir)),
-                ((EditText) view.findViewById(R.id.jarakhamil)),
-                ((EditText) view.findViewById(R.id.normal)),
-                ((EditText) view.findViewById(R.id.sesar)),
-                ((EditText) view.findViewById(R.id.vaccum)),
-                ((EditText) view.findViewById(R.id.prematur)),
-                ((EditText) view.findViewById(R.id.bb1)),
-                ((EditText) view.findViewById(R.id.bb2)),
-                ((EditText) view.findViewById(R.id.bb3)),
-        };
+
+        //load data
+        HashMap<String,String> req = new HashMap<>();
+        req.put("idibu",usernameibu);
+        new HubunganAtas(getContext(),"http://sahabatbundaku.org/request_android/get_pemeriksaan.php",req,"load");
 
         final String[] keys = {"hpmt","hamilke","jumlahir","jarakhamil","normal","sesar","vaccum","prematur","bb1","bb2","bb3"};
 
@@ -142,13 +148,17 @@ public class  PemeriksaanAmnesa extends Fragment {
                 HashMap<String,String> data = new HashMap<>();
                 //getting all value from edittext
                 for (int i = 0; i < handler.length; i++) {
-                    data.put(keys[i],handler[i].getText().toString());
+                    if (handler[i].getText().toString().trim().length()!=0)
+                        data.put(keys[i],handler[i].getText().toString());
+                    else
+                        data.put(keys[i],"0");
                 }
                 data.put("penolong","");
                 for (int i = 0; i < penolong.length; i++) {
                     if (penolong[i].isChecked())
                         data.put("penolong",data.get("penolong")+penolong[i].getText().toString()+",");
                 }
+                if (data.get("penolong").trim().length()==0) data.put("penolong","0");
 
                 data.put("usernamebidan",usernamebidan);
                 data.put("usernameibu",usernameibu);
@@ -157,11 +167,12 @@ public class  PemeriksaanAmnesa extends Fragment {
                 {
                     Log.d("PHP", "onClick: "+entry.getKey() +" : "+entry.getValue());
                 }
-                new HubunganAtas(getContext(),"http://sahabatbundaku.org/request_android/riwayat_hamil.php",data)
+                new HubunganAtas(getActivity(),"http://sahabatbundaku.org/request_android/riwayat_hamil.php",data,"riwayat")
                 .execute();
 
             }
         });
         return view;
     }
+
 }
