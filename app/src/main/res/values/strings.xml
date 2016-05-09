@@ -42,4 +42,18 @@
         <item>2-10</item>
         <item>10</item>
     </string-array>
+
+    <string-array name="faspelkes">
+        <item>Puskesmas</item>
+        <item>Rumah Sakit</item>
+        <item>Rumah Sakit Bersalin</item>
+        <item>Bidan Swasta</item>
+    </string-array>
+
+    <string-array name="faspelkesval">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

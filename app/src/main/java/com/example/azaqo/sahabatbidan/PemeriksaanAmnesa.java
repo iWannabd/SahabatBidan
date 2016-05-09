@@ -14,9 +14,13 @@ import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class  PemeriksaanAmnesa extends Fragment {
@@ -136,9 +140,9 @@ public class  PemeriksaanAmnesa extends Fragment {
 
 
         //load data
-        HashMap<String,String> req = new HashMap<>();
-        req.put("idibu",usernameibu);
-        new HubunganAtas(getContext(),"http://sahabatbundaku.org/request_android/get_pemeriksaan.php",req,"load");
+//        HashMap<String,String> req = new HashMap<>();
+//        req.put("idibu",usernameibu);
+//        new HubunganAtas(getContext(),"http://sahabatbundaku.org/request_android/get_pemeriksaan.php",req,"load");
 
         final String[] keys = {"hpmt","hamilke","jumlahir","jarakhamil","normal","sesar","vaccum","prematur","bb1","bb2","bb3"};
 
@@ -153,12 +157,13 @@ public class  PemeriksaanAmnesa extends Fragment {
                     else
                         data.put(keys[i],"0");
                 }
-                data.put("penolong","");
+                List<Integer> peno = new ArrayList<>();
+
                 for (int i = 0; i < penolong.length; i++) {
                     if (penolong[i].isChecked())
-                        data.put("penolong",data.get("penolong")+penolong[i].getText().toString()+",");
+                        peno.add(i);
                 }
-                if (data.get("penolong").trim().length()==0) data.put("penolong","0");
+                data.put("penolong",peno.toString());
 
                 data.put("usernamebidan",usernamebidan);
                 data.put("usernameibu",usernameibu);
@@ -173,6 +178,35 @@ public class  PemeriksaanAmnesa extends Fragment {
             }
         });
         return view;
+    }
+
+    public View setDataRiwayatHamil(View v,String resultjson) throws JSONException {
+        JSONObject datariwayathamil = new JSONObject(resultjson);
+        EditText[] handler = {
+                ((EditText) v.findViewById(R.id.hpmt)),
+                ((EditText) v.findViewById(R.id.hamilke)),
+                ((EditText) v.findViewById(R.id.jumlahir)),
+                ((EditText) v.findViewById(R.id.jarakhamil)),
+                ((EditText) v.findViewById(R.id.normal)),
+                ((EditText) v.findViewById(R.id.sesar)),
+                ((EditText) v.findViewById(R.id.vaccum)),
+                ((EditText) v.findViewById(R.id.prematur)),
+                ((EditText) v.findViewById(R.id.bb1)),
+                ((EditText) v.findViewById(R.id.bb2)),
+                ((EditText) v.findViewById(R.id.bb3)),
+        };
+        String[] konci = {"hpmt","hamilke","jumlahir","jarakhamil","normal","sesar","vaccum","prematur","bb1","bb2","bb3"};
+        //set data untuk setiap edit text
+        for (int i = 0; i < handler.length; i++) {
+            handler[i].setText(datariwayathamil.getString(konci[i]));
+        }
+
+        //data untuk checkbox penolong
+
+
+
+
+        return v;
     }
 
 }

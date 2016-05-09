@@ -1,15 +1,19 @@
 package com.example.azaqo.sahabatbidan;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +23,7 @@ import android.widget.Toast;
 public class PlaceholderFragmentLogin extends Fragment {
     public static SharedPreferences shapref;
     public static SharedPreferences.Editor editor;
-    static final String[] tokeys = {"nama","instansi","alamatrs","alamatbidan","username","passwd"};
+    static final String[] tokeys = {"nama","instansi","alamatrs","alamatbidan","username","passwd","email","faspelkes"};
 
     ChangePage changePage;
     public interface ChangePage{
@@ -114,13 +118,15 @@ public class PlaceholderFragmentLogin extends Fragment {
                 (EditText) view.findViewById(R.id.alamatbidan),
                 (EditText) view.findViewById(R.id.username),
                 (EditText) view.findViewById(R.id.passwd),
+                (EditText) view.findViewById(R.id.email),
         };
+        final Spinner faspelkes = (Spinner) view.findViewById(R.id.faspelkes);
 
         btn_daftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Boolean lengkap=true;
-                for (int i = 0; i < tokeys.length; i++) {
+                for (int i = 0; i < todata.length; i++) {
                     if (todata[i].getText().toString().trim().length() != 0) {
                         lengkap = true;
                     }
@@ -130,11 +136,33 @@ public class PlaceholderFragmentLogin extends Fragment {
                     }
                 }
                 if (lengkap) {
-                    for (int i = 0; i < tokeys.length; i++) {
+                    for (int i = 0; i < todata.length; i++) {
                         editor.putString(tokeys[i], todata[i].getText().toString());
                     }
+                    editor.putString("faspelkes",""+faspelkes.getSelectedItemPosition());
                     editor.commit();
-                    UploadData();
+                    //menampilkan syarat dan ketentuan
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("Syarat dan ketentuan");
+                    alertDialog.setMessage("Apakah anda menyetujua persyaratan dan ketentuan yang berlaku?");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ya",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    UploadData();
+                                    dialog.dismiss();
+                                }
+                            }
+                    );
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,"Tidak",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }
+                            );
+                    alertDialog.show();
                 } else
                     Toast.makeText(getContext(),"Data belum lengkap",Toast.LENGTH_SHORT).show();
             }
