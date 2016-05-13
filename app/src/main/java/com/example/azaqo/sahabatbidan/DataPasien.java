@@ -1,9 +1,12 @@
 package com.example.azaqo.sahabatbidan;
 
+import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -26,9 +29,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DataPasien extends AppCompatActivity {
+public class DataPasien extends AppCompatActivity implements PairingDialog.NoticeDialogFragment{
 
     ListView datapasien;
+    String bidan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,21 @@ public class DataPasien extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         datapasien = (ListView) findViewById(R.id.listPasien);
-        new HubunganAtas(this,getBaseContext(),"http://sahabatbundaku.org/request_android/search_ibu.php").execute(new String[]{""},new String[]{""});
+
+        SharedPreferences sp = getSharedPreferences("Data Dasar",MODE_PRIVATE);
+        bidan = sp.getString("SESSION_LOGIN","Bidan");
+
+        FloatingActionButton addPasien = (FloatingActionButton) findViewById(R.id.fab);
+        assert addPasien != null;
+        addPasien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogFragment = new PairingDialog();
+                dialogFragment.show(getFragmentManager(),"PairingDialog");
+            }
+        });
+
+        new HubunganAtas(this,getBaseContext(),"http://sahabatbundaku.org/request_android/search_ibu.php").execute(new String[]{"uname"},new String[]{bidan});
     }
 
     @Override
@@ -58,18 +76,14 @@ public class DataPasien extends AppCompatActivity {
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new HubunganAtas(act,appc,"http://sahabatbundaku.org/request_android/search_ibu.php").execute(new String[]{"cari"},new String[]{query});
+                new HubunganAtas(act,appc,"http://sahabatbundaku.org/request_android/search_ibu.php").execute(new String[]{"cari","uname"},new String[]{query,bidan});
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
-
-
         });
-
         return true;
     }
 
@@ -113,5 +127,10 @@ public class DataPasien extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void onSimpanPressed(DialogFragment dialog, String uname, String passwd) {
+        Log.d("PHP", "onSimpanPressed: "+uname+" "+passwd+" "+bidan);
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/pairing_ibubidan.php","pairing").execute(new String[]{"usernameibu","passwd","usernamebidan"},new String[]{uname,passwd,bidan});
+        new HubunganAtas(this,getBaseContext(),"http://sahabatbundaku.org/request_android/search_ibu.php").execute(new String[]{"uname"},new String[]{bidan});
+    }
 }
