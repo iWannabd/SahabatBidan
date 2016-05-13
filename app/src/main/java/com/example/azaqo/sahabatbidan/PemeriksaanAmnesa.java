@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -100,6 +101,12 @@ public class  PemeriksaanAmnesa extends Fragment {
     }
 
     public View periksariwayat(View view){
+
+        //cek database dlu om
+        HashMap<String,String> getdata = new HashMap<>();
+        getdata.put("usernameibu",usernameibu);
+        new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_pemeriksaan.php","loaddata",view,this).execute();
+
         final EditText[] handler = {
                 ((EditText) view.findViewById(R.id.hpmt)),
                 ((EditText) view.findViewById(R.id.hamilke)),
@@ -180,33 +187,49 @@ public class  PemeriksaanAmnesa extends Fragment {
         return view;
     }
 
-    public View setDataRiwayatHamil(View v,String resultjson) throws JSONException {
-        JSONObject datariwayathamil = new JSONObject(resultjson);
-        EditText[] handler = {
-                ((EditText) v.findViewById(R.id.hpmt)),
-                ((EditText) v.findViewById(R.id.hamilke)),
-                ((EditText) v.findViewById(R.id.jumlahir)),
-                ((EditText) v.findViewById(R.id.jarakhamil)),
-                ((EditText) v.findViewById(R.id.normal)),
-                ((EditText) v.findViewById(R.id.sesar)),
-                ((EditText) v.findViewById(R.id.vaccum)),
-                ((EditText) v.findViewById(R.id.prematur)),
-                ((EditText) v.findViewById(R.id.bb1)),
-                ((EditText) v.findViewById(R.id.bb2)),
-                ((EditText) v.findViewById(R.id.bb3)),
-        };
-        String[] konci = {"hpmt","hamilke","jumlahir","jarakhamil","normal","sesar","vaccum","prematur","bb1","bb2","bb3"};
-        //set data untuk setiap edit text
-        for (int i = 0; i < handler.length; i++) {
-            handler[i].setText(datariwayathamil.getString(konci[i]));
+    public void setDataRiwayatHamil(View v,String resultjson) throws JSONException {
+        if (!resultjson.equals("Belum menjalain pemeriksaan")) {
+            Log.d("PHP", "setDataRiwayatHamil: loadharusnya");
+            Log.d("PHP", "setDataRiwayatHamil: "+resultjson);
+            Toast.makeText(getActivity(),"Telah menjalani pemeriksaan",Toast.LENGTH_SHORT).show();
+            JSONObject datariwayathamil = new JSONObject(resultjson);
+            EditText[] handler = {
+                    ((EditText) v.findViewById(R.id.hpmt)),
+                    ((EditText) v.findViewById(R.id.hamilke)),
+                    ((EditText) v.findViewById(R.id.jumlahir)),
+                    ((EditText) v.findViewById(R.id.jarakhamil)),
+                    ((EditText) v.findViewById(R.id.normal)),
+                    ((EditText) v.findViewById(R.id.sesar)),
+                    ((EditText) v.findViewById(R.id.vaccum)),
+                    ((EditText) v.findViewById(R.id.prematur)),
+                    ((EditText) v.findViewById(R.id.bb1)),
+                    ((EditText) v.findViewById(R.id.bb2)),
+                    ((EditText) v.findViewById(R.id.bb3)),
+            };
+            String[] konci = {"hpmt", "hamilke", "jumlahir", "jarakhamil", "normal", "sesar", "vaccum", "prematur", "bb1", "bb2", "bb3"};
+            //set data untuk setiap edit text
+            for (int i = 0; i < handler.length; i++) {
+                handler[i].setText(datariwayathamil.getString(konci[i]));
+            }
+            //data untuk checkbox penolong
+            final CheckBox[] penolong = {
+                    (CheckBox) v.findViewById(R.id.p1),
+                    (CheckBox) v.findViewById(R.id.p2),
+                    (CheckBox) v.findViewById(R.id.p3),
+                    (CheckBox) v.findViewById(R.id.p4),
+            };
+            String dafterpenolong_raw = datariwayathamil.getString("penolong");
+            Log.d("PHP", "setDataRiwayatHamil: "+dafterpenolong_raw);
+            dafterpenolong_raw = dafterpenolong_raw.substring(1, dafterpenolong_raw.length() - 1);
+
+            List<String> daftarpenolong = Arrays.asList(dafterpenolong_raw.split("\\s*,\\s*"));
+
+            for (String dafpen : daftarpenolong) {
+                penolong[Integer.parseInt(dafpen)].setChecked(true);
+            }
+        } else {
+            Toast.makeText(getActivity(),resultjson,Toast.LENGTH_SHORT).show();
         }
-
-        //data untuk checkbox penolong
-
-
-
-
-        return v;
     }
 
 }
