@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 /**
  * Created by azaqo on 30/04/2016.
+ * kelas ini digunakan oleh beberapa kelas lain untuk melakukan http request
  */
 public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     DataPasien activity;
@@ -91,6 +92,4 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
             e.printStackTrace();
         }
     }
-
-
 }

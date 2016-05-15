@@ -9,7 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActivityPemeriksaan extends AppCompatActivity implements PemeriksaanListener{
 
@@ -30,6 +34,7 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
      */
     private ViewPager mViewPager;
     String bidan;
+    HashMap<String,String> datapemeriksaanAll = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,26 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void kumpulinData(HashMap<String, String> data) {
+        datapemeriksaanAll.putAll(data);
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+        Log.d("PHP", "____________");
+        for (Map.Entry<String,String> isi:datapemeriksaanAll.entrySet()){
+            Log.d("PHP", "kumpulinData: "+isi.getKey()+":"+isi.getValue());
+        }
+    }
+
+    @Override
+    public void uploadData() {
+        //upload semua data pemeriksaan pakai kelas HubunganAtas
+        //get dan set pemeriksaan dilakukan oleh masing masing fragment
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/riwayat_hamil.php",datapemeriksaanAll,"riwayat")
+                .execute();
+
+    }
+
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -93,20 +118,20 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 5;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Data Lengkap Ibu";
+                    return "Data Lengkap";
                 case 1:
-                    return "Riwayat Kehamilan";
+                    return "Kehamilan";
                 case 2:
-                    return "Riwayat Penyakit";
+                    return "Penyakit";
                 case 3:
-                    return "Keluahan";
+                    return "Keluhan";
                 case 4:
                     return "Pemeriksaan";
             }

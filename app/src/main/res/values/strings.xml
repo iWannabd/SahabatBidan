@@ -12,10 +12,11 @@
     <string-array name="keadaan_umum">
         <item>Baik</item>
         <item>Sedang</item>
-        <item>Tanpa Anemik</item>
+        <item>Tampak Anemis</item>
     </string-array>
 
     <string-array name="presentasi_janin">
+        <item>Belum Terdeteksi</item>
         <item>Tidak Terdeteksi</item>
         <item>Lintang</item>
         <item>Sungsang</item>
@@ -43,6 +44,13 @@
         <item>10</item>
     </string-array>
 
+    <string-array name="golongan_darah">
+        <item>A</item>
+        <item>AB</item>
+        <item>B</item>
+        <item>O</item>
+    </string-array>
+
     <string-array name="faspelkes">
         <item>Puskesmas</item>
         <item>Rumah Sakit</item>
@@ -55,5 +63,18 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+    </string-array>
+
+    <string-array name="konstrasepsi">
+        <item>AKDR/IUD</item>
+        <item>Suntik</item>
+        <item>Implan/Susuk</item>
+        <item>Tidak ada</item>
+    </string-array>
+
+    <string-array name="konstrasepsi_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 </resources>

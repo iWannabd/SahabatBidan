@@ -9,9 +9,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-/**
- * Created by azaqo on 28/04/2016.
- */
 public class UploadDataRegistrasi extends AsyncTask<String[],Void,String> {
 
     Context context;
@@ -44,7 +41,7 @@ public class UploadDataRegistrasi extends AsyncTask<String[],Void,String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ada yang salah";
+        return "2";
     }
 
     @Override
@@ -60,6 +57,7 @@ public class UploadDataRegistrasi extends AsyncTask<String[],Void,String> {
             if (s.equals("0")) {
                 Toast.makeText(context, "Terjadi kesalahan pada server", Toast.LENGTH_LONG).show();
             }
+            if (s.equals("2")) Toast.makeText(context,"Sepertinya perangkat tidak terhubung ke internet",Toast.LENGTH_SHORT).show();
             if (s.equals("1")) {
                 Toast.makeText(context, "Username atau Password salah", Toast.LENGTH_LONG).show();
             }

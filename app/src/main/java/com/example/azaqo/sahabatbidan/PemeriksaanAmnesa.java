@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
@@ -74,10 +75,20 @@ public class  PemeriksaanAmnesa extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view;
         switch (position){
             case 1:
-                View view = inflater.inflate(R.layout.riwayat_hamil, container, false);
+                view = inflater.inflate(R.layout.riwayat_hamil, container, false);
                 return periksariwayat(view);
+            case 2:
+                view = inflater.inflate(R.layout.riwayat_penyakit,container,false);
+                return periksapenyakit(view);
+            case 3:
+                view = inflater.inflate(R.layout.riwayat_keluhan,container,false);
+                return periksakeluhan(view);
+            case 4:
+                view = inflater.inflate(R.layout.pemeriksaan_umum,container,false);
+                return periksaumum(view);
             default:
                 return null;
         }
@@ -101,7 +112,6 @@ public class  PemeriksaanAmnesa extends Fragment {
     }
 
     public View periksariwayat(View view){
-
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
         getdata.put("usernameibu",usernameibu);
@@ -159,31 +169,187 @@ public class  PemeriksaanAmnesa extends Fragment {
                 HashMap<String,String> data = new HashMap<>();
                 //getting all value from edittext
                 for (int i = 0; i < handler.length; i++) {
-                    if (handler[i].getText().toString().trim().length()!=0)
-                        data.put(keys[i],handler[i].getText().toString());
-                    else
-                        data.put(keys[i],"0");
+                    data.put(keys[i],handler[i].getText().toString());
                 }
+                //getting value for penolong
                 List<Integer> peno = new ArrayList<>();
-
                 for (int i = 0; i < penolong.length; i++) {
                     if (penolong[i].isChecked())
                         peno.add(i);
                 }
                 data.put("penolong",peno.toString());
-
+                //get username ibu and bidan
                 data.put("usernamebidan",usernamebidan);
                 data.put("usernameibu",usernameibu);
 
-                for (Map.Entry<String, String> entry : data.entrySet())
-                {
-                    Log.d("PHP", "onClick: "+entry.getKey() +" : "+entry.getValue());
+                mListener.kumpulinData(data);
+            }
+        });
+        return view;
+    }
+
+    public View periksapenyakit(View view ){
+        final CheckBox[] penyakit = {
+                (CheckBox) view.findViewById(R.id.darahTinggi),
+                (CheckBox) view.findViewById(R.id.gula),
+                (CheckBox) view.findViewById(R.id.asma),
+                (CheckBox) view.findViewById(R.id.jantung),
+        };
+        final CheckBox penyakitx[] = {
+                (CheckBox) view.findViewById(R.id.darahTinggiturunan),
+                (CheckBox) view.findViewById(R.id.gulaturunan),
+                (CheckBox) view.findViewById(R.id.asmaturunan),
+                (CheckBox) view.findViewById(R.id.jantungturunan)
+        };
+        final Spinner kontra = (Spinner) view.findViewById(R.id.kontra);
+        final EditText[] imunisasi = {
+                (EditText) view.findViewById(R.id.tt1),
+                (EditText) view.findViewById(R.id.tt2),
+                (EditText) view.findViewById(R.id.tt3),
+                (EditText) view.findViewById(R.id.tt4),
+                (EditText) view.findViewById(R.id.tt5),
+        };
+        Button lanjut = (Button) view.findViewById(R.id.btnSubmitPenyakit);
+        lanjut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String,String> data = new HashMap<String, String>();
+                //getting value for imunisasi
+                String key[] = {"imunisasiTT1", "imunisasiTT2", "imunisasiTT3", "imunisasiTT4", "imunisasiTT5"};
+                for (int i = 0; i < key.length; i++) {
+                    data.put(key[i],imunisasi[i].getText().toString());
                 }
-                new HubunganAtas(getActivity(),"http://sahabatbundaku.org/request_android/riwayat_hamil.php",data,"riwayat")
-                .execute();
+                //getting value of penyakit biasa
+                ArrayList<Integer> penya = new ArrayList<>();
+                for (int i = 0; i < penyakit.length; i++) {
+                    if (penyakit[i].isChecked()) penya.add(i);
+                }
+                data.put("riwayatpenyakit",penya.toString());
+                //getting value of penyakir turunan
+                ArrayList<Integer> penyax = new ArrayList<Integer>();
+                for (int i = 0; i < penyakitx.length; i++) {
+                    if (penyakitx[i].isChecked()) penyax.add(i);
+                }
+                data.put("penyakitturun",penyax.toString());
+                //getting value for kontra
+                data.put("riwayatkont",""+kontra.getSelectedItemPosition());
+
+                mListener.kumpulinData(data);
+            }
+        });
+        return view;
+    }
+    public View periksakeluhan(View view){
+        final CheckBox tri1[] = {
+                (CheckBox) view.findViewById(R.id.mualmuntah),
+                (CheckBox) view.findViewById(R.id.susahbab),
+                (CheckBox) view.findViewById(R.id.keputhihan),
+                (CheckBox) view.findViewById(R.id.pusing),
+                (CheckBox) view.findViewById(R.id.mudahlelah),
+                (CheckBox) view.findViewById(R.id.bakar),
+        };
+
+        final CheckBox tri2[] = {
+                (CheckBox) view.findViewById(R.id.pusing1),
+                (CheckBox) view.findViewById(R.id.nyeriperut),
+                (CheckBox) view.findViewById(R.id.nyeripunggung),
+                (CheckBox) view.findViewById(R.id.keputhihan1),
+                (CheckBox) view.findViewById(R.id.susahbab1),
+                (CheckBox) view.findViewById(R.id.kemih),
+                (CheckBox) view.findViewById(R.id.gerakjanin),
+        };
+
+        final CheckBox tri3[] = {
+                (CheckBox) view.findViewById(R.id.susahbab2),
+                (CheckBox) view.findViewById(R.id.kramkaki),
+                (CheckBox) view.findViewById(R.id.nyeriperut1),
+                (CheckBox) view.findViewById(R.id.gerakjanin2),
+                (CheckBox) view.findViewById(R.id.kemih1),
+                (CheckBox) view.findViewById(R.id.bengkakkaki),
+                (CheckBox) view.findViewById(R.id.keputhihan2),
+                (CheckBox) view.findViewById(R.id.insomnia),
+                (CheckBox) view.findViewById(R.id.sesaknapas),
+                (CheckBox) view.findViewById(R.id.nyeripinggang),
+                (CheckBox) view.findViewById(R.id.darah),
+        };
+
+        Button submit = (Button) view.findViewById(R.id.btnSubmitKeluhan);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String,String> data = new HashMap<>();
+
+                ArrayList<Integer> t1 = new ArrayList<>();
+                for (int i = 0; i < tri1.length; i++) {
+                    if (tri1[i].isChecked()) t1.add(i);
+                }
+                data.put("tris1",t1.toString());
+
+                ArrayList<Integer> t2 = new ArrayList<>();
+                for (int i = 0; i < tri2.length; i++) {
+                    if (tri2[i].isChecked()) t2.add(i);
+                }
+                data.put("tris2",t2.toString());
+
+                ArrayList<Integer> t3 = new ArrayList<>();
+                for (int i = 0; i < tri3.length; i++) {
+                    if (tri3[i].isChecked()) t3.add(i);
+                }
+                data.put("tris3",t3.toString());
+
+                mListener.kumpulinData(data);
+            }
+        });
+        return view;
+    }
+
+    public View periksaumum(View view){
+
+        final EditText teksu[] = {
+                (EditText) view.findViewById(R.id.suhutubuh),
+                (EditText) view.findViewById(R.id.tekanandarahsistol),
+                (EditText) view.findViewById(R.id.tekanandarahdiastol),
+                (EditText) view.findViewById(R.id.beratbadan),
+                (EditText) view.findViewById(R.id.lila),
+                (EditText) view.findViewById(R.id.tfu),
+                (EditText) view.findViewById(R.id.hb),
+                (EditText) view.findViewById(R.id.jantungjanin),
+        };
+
+        final Spinner spiners[] = {
+                (Spinner) view.findViewById(R.id.keadaanumum),
+                (Spinner) view.findViewById(R.id.goldar),
+                (Spinner) view.findViewById(R.id.prejanin),
+                (Spinner) view.findViewById(R.id.gerakjanin2jam),
+        };
+
+        Button but = (Button) view.findViewById(R.id.btnSubmitUmum);
+
+        but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String,String> data = new HashMap<String, String>();
+
+                String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","lila","tfu","pemeriksaanhb","detakjantungjanin"};
+                String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin"};
+
+                for (int i = 0; i < keyedt.length; i++) {
+                    if (!teksu[i].getText().toString().matches(""))
+                        data.put(keyedt[i],teksu[i].getText().toString());
+                    else
+                        data.put(keyedt[i],"-1");
+                }
+
+                for (int i = 0; i < kespin.length; i++) {
+                    data.put(kespin[i],""+spiners[i].getSelectedItemPosition());
+                }
+
+                mListener.kumpulinData(data);
+                mListener.uploadData();
 
             }
         });
+
         return view;
     }
 
@@ -232,4 +398,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         }
     }
 
+    public void setRiwayatPenyakit(String json){
+
+    }
 }
