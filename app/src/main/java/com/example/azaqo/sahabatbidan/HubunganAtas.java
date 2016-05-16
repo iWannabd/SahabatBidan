@@ -85,7 +85,10 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
             if (activity!=null && !flag.equals("pairing")) activity.setDatapasien(result);
             if (detil!=null) detil.setDatapasien(result);
             if (flag.equals("riwayat")) Toast.makeText(context,result,Toast.LENGTH_LONG).show();
-            if (fragment!=null) fragment.setDataRiwayatHamil(view,result);
+            if (fragment!=null && flag.equals("loaddata")) fragment.setDataRiwayatHamil(view,result);
+            if (fragment!=null && flag.equals("penyakit")) fragment.setRiwayatPenyakit(view,result);
+            if (fragment!=null && flag.equals("keluhan")) fragment.setDataKeluahan(view,result);
+            if (fragment!=null && flag.equals("umumperiksa")) fragment.setDataPemeriksaanUmum(view,result);
             if (flag.equals("pairing")) Toast.makeText(activity,result,Toast.LENGTH_SHORT).show();
             Log.d("PHP", "onPostExecute:"+result);
         } catch (JSONException e) {

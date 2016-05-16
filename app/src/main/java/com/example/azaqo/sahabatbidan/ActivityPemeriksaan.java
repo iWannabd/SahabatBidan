@@ -75,11 +75,6 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
     @Override
     public void kumpulinData(HashMap<String, String> data) {
         datapemeriksaanAll.putAll(data);
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
-        Log.d("PHP", "____________");
-        for (Map.Entry<String,String> isi:datapemeriksaanAll.entrySet()){
-            Log.d("PHP", "kumpulinData: "+isi.getKey()+":"+isi.getValue());
-        }
     }
 
     @Override
@@ -91,6 +86,10 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
 
     }
 
+    @Override
+    public void geser() {
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+    }
 
 
     /**
