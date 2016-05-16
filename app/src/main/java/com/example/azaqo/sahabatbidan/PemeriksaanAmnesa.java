@@ -226,7 +226,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                 }
                 data.put("riwayatpenyakit",penya.toString());
                 //getting value of penyakir turunan
-                ArrayList<Integer> penyax = new ArrayList<Integer>();
+                ArrayList<Integer> penyax = new ArrayList<>();
                 for (int i = 0; i < penyakitx.length; i++) {
                     if (penyakitx[i].isChecked()) penyax.add(i);
                 }
@@ -328,7 +328,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String,String> data = new HashMap<String, String>();
+                HashMap<String,String> data = new HashMap<>();
 
                 String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","lila","tfu","pemeriksaanhb","detakjantungjanin"};
                 String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin"};
@@ -385,7 +385,6 @@ public class  PemeriksaanAmnesa extends Fragment {
                     (CheckBox) v.findViewById(R.id.p4),
             };
             String dafterpenolong_raw = datariwayathamil.getString("penolong");
-            Log.d("PHP", "setDataRiwayatHamil: "+dafterpenolong_raw);
             dafterpenolong_raw = dafterpenolong_raw.substring(1, dafterpenolong_raw.length() - 1);
 
             List<String> daftarpenolong = Arrays.asList(dafterpenolong_raw.split("\\s*,\\s*"));
@@ -398,7 +397,56 @@ public class  PemeriksaanAmnesa extends Fragment {
         }
     }
 
-    public void setRiwayatPenyakit(String json){
+    public void setRiwayatPenyakit(View view,String json){
+
+        JSONObject dataperiksa;
+        try {
+            dataperiksa = new JSONObject(json);
+            final CheckBox[] penyakit = {
+                    (CheckBox) view.findViewById(R.id.darahTinggi),
+                    (CheckBox) view.findViewById(R.id.gula),
+                    (CheckBox) view.findViewById(R.id.asma),
+                    (CheckBox) view.findViewById(R.id.jantung),
+            };
+            final CheckBox penyakitx[] = {
+                    (CheckBox) view.findViewById(R.id.darahTinggiturunan),
+                    (CheckBox) view.findViewById(R.id.gulaturunan),
+                    (CheckBox) view.findViewById(R.id.asmaturunan),
+                    (CheckBox) view.findViewById(R.id.jantungturunan)
+            };
+            final Spinner kontra = (Spinner) view.findViewById(R.id.kontra);
+            final EditText[] imunisasi = {
+                    (EditText) view.findViewById(R.id.tt1),
+                    (EditText) view.findViewById(R.id.tt2),
+                    (EditText) view.findViewById(R.id.tt3),
+                    (EditText) view.findViewById(R.id.tt4),
+                    (EditText) view.findViewById(R.id.tt5),
+            };
+            String key[] = {"imunisasiTT1", "imunisasiTT2", "imunisasiTT3", "imunisasiTT4", "imunisasiTT5"};
+            for (int i = 0; i < imunisasi.length; i++) {
+                imunisasi[i].setText(dataperiksa.getString(key[i]));
+            }
+            String raw = dataperiksa.getString("riwayatpenyakit");
+            raw = raw.substring(1, raw.length() - 1);
+
+            List<String> raww = Arrays.asList(raw.split("\\s*,\\s*"));
+            for (String i: raww) {
+                penyakit[Integer.parseInt(i)].setChecked(true);
+            }
+
+            raw = dataperiksa.getString("penyakitturun");
+            raw = raw.substring(1, raw.length() - 1);
+
+            raww = Arrays.asList(raw.split("\\s*,\\s*"));
+            for (String i: raww) {
+                penyakitx[Integer.parseInt(i)].setChecked(true);
+            }
+
+            kontra.setSelection(Integer.parseInt(dataperiksa.getString("riwayatkont")),true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
