@@ -127,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Imunisasi TT1"/>
+            android:hint="Imunisasi TT1 dilakukan pada tahun"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -139,7 +139,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Imunisasi TT2"/>
+            android:hint="Imunisasi TT2 dilakukan pada tahun"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -151,7 +151,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Imunisasi TT3"/>
+            android:hint="Imunisasi TT3 dilakukan pada tahun"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -163,7 +163,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Imunisasi TT4"/>
+            android:hint="Imunisasi TT4 dilakukan pada tahun"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -175,7 +175,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Imunisasi TT5"/>
+            android:hint="Imunisasi TT5 dilakukan pada tahun"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.AppCompatButton

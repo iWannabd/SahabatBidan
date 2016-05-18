@@ -152,7 +152,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                             }
                         })
                         .setFirstDayOfWeek(Calendar.SUNDAY)
-                        .setDoneText("Sudah");
+                        .setDoneText("Ok");
                 cdp.show(getFragmentManager(),"HPMT");
             }
         });
@@ -216,6 +216,8 @@ public class  PemeriksaanAmnesa extends Fragment {
         getdata.put("usernameibu",usernameibu);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_penyakit.php","penyakit",view,this).execute();
 
+        Spinner kont = (Spinner) view.findViewById(R.id.kontra);
+        kont.setSelection(3);
 
         Button lanjut = (Button) view.findViewById(R.id.btnSubmitPenyakit);
         lanjut.setOnClickListener(new View.OnClickListener() {
@@ -353,9 +355,6 @@ public class  PemeriksaanAmnesa extends Fragment {
         HashMap<String,String> getdata = new HashMap<>();
         getdata.put("usernameibu",usernameibu);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_umum.php","umumperiksa",view,this).execute();
-
-
-
         Button but = (Button) view.findViewById(R.id.btnSubmitUmum);
 
         but.setOnClickListener(new View.OnClickListener() {
@@ -376,6 +375,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (EditText) view.findViewById(R.id.tekanandarahsistol),
                 (EditText) view.findViewById(R.id.tekanandarahdiastol),
                 (EditText) view.findViewById(R.id.beratbadan),
+                (EditText) view.findViewById(R.id.tinggibadan),
                 (EditText) view.findViewById(R.id.lila),
                 (EditText) view.findViewById(R.id.tfu),
                 (EditText) view.findViewById(R.id.hb),
@@ -391,7 +391,7 @@ public class  PemeriksaanAmnesa extends Fragment {
 
         HashMap<String,String> data = new HashMap<>();
 
-        String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","lila","tfu","pemeriksaanhb","detakjantungjanin"};
+        String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin"};
         String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin"};
 
         for (int i = 0; i < keyedt.length; i++) {
@@ -580,6 +580,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (EditText) view.findViewById(R.id.tekanandarahsistol),
                 (EditText) view.findViewById(R.id.tekanandarahdiastol),
                 (EditText) view.findViewById(R.id.beratbadan),
+                (EditText) view.findViewById(R.id.tinggibadan),
                 (EditText) view.findViewById(R.id.lila),
                 (EditText) view.findViewById(R.id.tfu),
                 (EditText) view.findViewById(R.id.hb),
@@ -596,7 +597,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         if (!json.equals("Belum menjalain pemeriksaan")){
             JSONObject dataperiksa = new JSONObject(json);
 
-            String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","lila","tfu","pemeriksaanhb","detakjantungjanin"};
+            String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin"};
             String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin"};
 
             int i = 0;

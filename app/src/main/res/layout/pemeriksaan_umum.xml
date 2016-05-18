@@ -78,11 +78,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/tinggibadan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="Tinggi Badan (Cm)"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
             <EditText android:id="@+id/lila"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:hint="LILA (Cm)(Kosongkan jika belum terukur)"/>
+                android:hint="LILA (Cm)"/>
         </android.support.design.widget.TextInputLayout>
 
 
