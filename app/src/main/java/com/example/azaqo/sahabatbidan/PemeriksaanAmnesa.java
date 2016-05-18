@@ -126,9 +126,6 @@ public class  PemeriksaanAmnesa extends Fragment {
                     case 3:
                         simpan3(view);
                         break;
-                    case 4:
-                        simpan4(view);
-                        break;
                 }
             }
         }
@@ -150,7 +147,8 @@ public class  PemeriksaanAmnesa extends Fragment {
                         .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
                             @Override
                             public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                                hpmt.setText(""+year+"-"+monthOfYear+"-"+dayOfMonth);
+                                int bulan = monthOfYear + 1;
+                                hpmt.setText(""+year+"-"+bulan+"-"+dayOfMonth);
                             }
                         })
                         .setFirstDayOfWeek(Calendar.SUNDAY)
@@ -349,7 +347,7 @@ public class  PemeriksaanAmnesa extends Fragment {
 
     }
 
-    public View periksaumum(View view){
+    public View periksaumum(final View view){
 
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
@@ -363,6 +361,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                simpan4(view);
                 mListener.uploadData();
 
             }
