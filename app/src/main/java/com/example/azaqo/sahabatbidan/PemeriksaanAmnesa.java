@@ -3,6 +3,8 @@ package com.example.azaqo.sahabatbidan;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +33,13 @@ public class  PemeriksaanAmnesa extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
+    private static final String ARG_PARAM4 = "param4";
 
     // TODO: Rename and change types of parameters
     private int position;
     private String usernameibu;
     private String usernamebidan;
+    private HashMap<String,String> data;
 
     private PemeriksaanListener mListener;
 
@@ -61,6 +65,15 @@ public class  PemeriksaanAmnesa extends Fragment {
         return fragment;
     }
 
+    public static PemeriksaanAmnesa newInstancedataperiksa(int param1,HashMap<String,String> data) {
+        PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PARAM1, param1);
+        args.putSerializable(ARG_PARAM4, data);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +81,7 @@ public class  PemeriksaanAmnesa extends Fragment {
             position = getArguments().getInt(ARG_PARAM1);
             usernameibu = getArguments().getString(ARG_PARAM2);
             usernamebidan = getArguments().getString(ARG_PARAM3);
+            data = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM4);
         }
     }
     View view;
@@ -89,6 +103,9 @@ public class  PemeriksaanAmnesa extends Fragment {
             case 4:
                 view = inflater.inflate(R.layout.pemeriksaan_umum,container,false);
                 return periksaumum(view);
+            case 5:
+                view = inflater.inflate(R.layout.resume_pemeriksaan,container,false);
+                return kesimpulan(view);
             default:
                 return null;
         }
@@ -129,6 +146,12 @@ public class  PemeriksaanAmnesa extends Fragment {
                 }
             }
         }
+    }
+
+
+    public View kesimpulan(View view){
+        Log.d("PHP", "kesimpulan: "+data.get("hpmt"));
+        return view;
     }
 
     public View periksariwayat(View view){

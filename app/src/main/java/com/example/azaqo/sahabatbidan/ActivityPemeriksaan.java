@@ -109,6 +109,8 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
             switch (position){
                 case 0:
                     return FragmentDataLengkapIbu.newInstance(getIntent().getStringExtra("unameibu"));
+                case 5:
+                    return PemeriksaanAmnesa.newInstancedataperiksa(position,datapemeriksaanAll);
                 default:
                     return PemeriksaanAmnesa.newInstance(position,getIntent().getStringExtra("unameibu"),bidan);
             }
@@ -116,23 +118,19 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 5;
+            // Show 5 total pages.
+            return 6;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
-                    return "Data Lengkap";
-                case 1:
-                    return "Kehamilan";
-                case 2:
-                    return "Penyakit";
-                case 3:
-                    return "Keluhan";
-                case 4:
-                    return "Pemeriksaan";
+                case 0: return "Data Lengkap";
+                case 1: return "Kehamilan";
+                case 2: return "Penyakit";
+                case 3: return "Keluhan";
+                case 4: return "Pemeriksaan";
+                case 5: return "Hasil";
             }
             return null;
         }
