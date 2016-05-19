@@ -13,10 +13,11 @@ public class DataIbuatauAnak extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_ibu_atau_anak);
         ImageButton ibu = (ImageButton) findViewById(R.id.btnDataIbu);
+        assert ibu != null;
         ibu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getBaseContext(),DataPasien.class));
+                startActivity(new Intent(getBaseContext(),DataPasiens.class));
             }
         });
     }

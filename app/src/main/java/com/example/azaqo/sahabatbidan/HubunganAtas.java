@@ -1,5 +1,6 @@
 package com.example.azaqo.sahabatbidan;
 
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -17,6 +18,8 @@ import java.util.HashMap;
  */
 public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     DataPasien activity;
+    DataPasiens activ;
+    DataPasiens.PlaceholderFragment pasien;
     PemeriksaanAmnesa fragment;
     FragmentDataLengkapIbu detil;
     Context context;
@@ -31,6 +34,16 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
         this.context = context;
         this.url = url;
         detil = null;
+    }
+
+    public HubunganAtas(DataPasiens.PlaceholderFragment pasien, String url) {
+        this.pasien = pasien;
+        this.url = url;
+    }
+
+    public HubunganAtas(String url, DataPasiens activ) {
+        this.url = url;
+        this.activ = activ;
     }
 
     public HubunganAtas(DataPasien activity, String url, String flag) {
@@ -90,6 +103,11 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
             if (fragment!=null && flag.equals("keluhan")) fragment.setDataKeluahan(view,result);
             if (fragment!=null && flag.equals("umumperiksa")) fragment.setDataPemeriksaanUmum(view,result);
             if (flag.equals("pairing")) Toast.makeText(activity,result,Toast.LENGTH_SHORT).show();
+            if (pasien!=null) pasien.setDatapasien(result);
+            if (activ!=null) {
+                Fragment page = activ.getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + activ.mViewPager.getCurrentItem());
+                if (activ.mViewPager.getCurrentItem() == 0 && page != null) ((DataPasiens.PlaceholderFragment)page).setDatapasien(result);
+            }
             Log.d("PHP", "onPostExecute:"+result);
         } catch (JSONException e) {
             e.printStackTrace();

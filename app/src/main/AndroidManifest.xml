@@ -43,7 +43,16 @@
         <activity
             android:name=".ActivityPemeriksaan"
             android:label="@string/title_activity_pemeriksaan"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DataPasiens"
+            android:label="@string/title_activity_data_pasiens"
+            android:parentActivityName=".DataIbuatauAnak"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.azaqo.sahabatbidan.DataIbuatauAnak" />
+        </activity>
     </application>
 
 </manifest>
