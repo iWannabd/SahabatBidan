@@ -1,5 +1,6 @@
 package com.example.azaqo.sahabatbidan;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DatadataKehamilan extends AppCompatActivity {
+public class DatadataKehamilan extends AppCompatActivity implements TambahKehamilanDialog.NoticeDialogFragment {
 
     ListView datakehamilan;
     String usernameibu;
@@ -36,8 +37,8 @@ public class DatadataKehamilan extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                DialogFragment df = new TambahKehamilanDialog();
+                df.show(getFragmentManager(),"Tambah kehamilan");
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,4 +75,15 @@ public class DatadataKehamilan extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onSimpanPressed(int selected) {
+        HashMap<String,String> send = new  HashMap<>();
+        send.put("ke",selected+"");
+        send.put("unameibu",usernameibu);
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/tambah_kehamilan.php","tambah",send).execute();
+        //refresh setelah tambah
+        HashMap<String,String> send2 = new HashMap<>();
+        send2.put("unameibu",usernameibu);
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/get_kehamilan.php",send2).execute();
+    }
 }

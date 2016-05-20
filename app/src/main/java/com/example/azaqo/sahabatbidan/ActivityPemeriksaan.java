@@ -77,6 +77,8 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
     public void uploadData() {
         //upload semua data pemeriksaan pakai kelas HubunganAtas
         //get dan set pemeriksaan dilakukan oleh masing masing fragment
+        for (Map.Entry<String, String> entry : datapemeriksaanAll.entrySet())
+            Log.d("PHP", "uploadData: "+entry.getKey()+": "+entry.getValue());
         new HubunganAtas(this,"http://sahabatbundaku.org/request_android/riwayat_hamil.php",datapemeriksaanAll,"riwayat")
                 .execute();
 

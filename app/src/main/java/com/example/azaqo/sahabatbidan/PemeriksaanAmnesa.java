@@ -155,6 +155,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
         getdata.put("usernameibu",usernameibu);
+        getdata.put("ke",ke);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_pemeriksaan.php","loaddata",view,this).execute();
 
 
@@ -216,6 +217,9 @@ public class  PemeriksaanAmnesa extends Fragment {
         for (int i = 0; i < handler.length; i++) {
             data.put(keys[i],handler[i].getText().toString());
         }
+        for (int i = 8; i <= 10; i++) {
+            if (handler[i].getText().toString().equals("")) handler[i].setText("0");
+        }
         //getting value for penolong
         List<Integer> peno = new ArrayList<>();
         for (int i = 0; i < penolong.length; i++) {
@@ -223,7 +227,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                 peno.add(i);
         }
         data.put("penolong",peno.toString());
-        //get username ibu and bidan
+        //put username ibu and hamilke
         data.put("ke", ke);
         data.put("usernameibu",usernameibu);
 
@@ -234,6 +238,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
         getdata.put("usernameibu",usernameibu);
+        getdata.put("ke",ke);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_penyakit.php","penyakit",view,this).execute();
 
         Spinner kont = (Spinner) view.findViewById(R.id.kontra);
@@ -298,6 +303,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
         getdata.put("usernameibu",usernameibu);
+        getdata.put("ke",ke);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_keluhan.php","keluhan",view,this).execute();
 
 
@@ -374,6 +380,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
         getdata.put("usernameibu",usernameibu);
+        getdata.put("ke",ke);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_umum.php","umumperiksa",view,this).execute();
         Button but = (Button) view.findViewById(R.id.btnSubmitUmum);
 

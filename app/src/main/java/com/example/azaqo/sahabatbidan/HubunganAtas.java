@@ -27,7 +27,15 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     String result = "{}";
     String url;
     String flag = ""; //sebagai penanda kelas digunakan oleh kelas mana
-    View view = null;
+    View view;
+
+    //tambah kehamilan
+    public HubunganAtas(DatadataKehamilan datadataKehamilan, String url, String flag,HashMap<String,String> data) {
+        this.datadataKehamilan = datadataKehamilan;
+        this.url = url;
+        this.flag = flag;
+        this.data = data;
+    }
 
     //FragmentDataLengkapIbu
     public HubunganAtas(FragmentDataLengkapIbu detil, String url) {
@@ -95,6 +103,7 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
             if (fragment!=null && flag.equals("umumperiksa")) fragment.setDataPemeriksaanUmum(view,result);
             if (pasien!=null) pasien.setDatapasien(result);
             if (datadataKehamilan!=null) datadataKehamilan.setDatadatakehamilan(result);
+            if (datadataKehamilan!=null && flag.equals("tambah")) Toast.makeText(datadataKehamilan,result,Toast.LENGTH_SHORT).show();
             if (activ!=null) {
                 Fragment page = activ.getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + activ.mViewPager.getCurrentItem());
                 if (activ.mViewPager.getCurrentItem() == 0 && page != null) ((DataPasiens.PlaceholderFragment)page).setDatapasien(result);
