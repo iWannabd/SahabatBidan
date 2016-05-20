@@ -73,7 +73,7 @@ public class FragmentDataLengkapIbu extends Fragment {
         View view = inflater.inflate(R.layout.fragment_data_lengkap_ibu, container, false);
         datalengkap = (ListView) view.findViewById(R.id.listDataLengIbu);
         //satu parameter lagi
-        new HubunganAtas(this,getActivity(),"http://sahabatbundaku.org/request_android/pemeriksaan_pidan_1.php")
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/pemeriksaan_pidan_1.php")
                 .execute(new String[]{"user"},new String[]{usernameibu});
 
         return view;

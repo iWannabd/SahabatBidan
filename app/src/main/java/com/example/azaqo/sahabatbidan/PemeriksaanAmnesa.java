@@ -3,8 +3,6 @@ package com.example.azaqo.sahabatbidan;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class  PemeriksaanAmnesa extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -38,7 +35,7 @@ public class  PemeriksaanAmnesa extends Fragment {
     // TODO: Rename and change types of parameters
     private int position;
     private String usernameibu;
-    private String usernamebidan;
+    private String ke;
     private HashMap<String,String> data;
 
     private PemeriksaanListener mListener;
@@ -55,12 +52,12 @@ public class  PemeriksaanAmnesa extends Fragment {
      * @return A new instance of fragment PemeriksaanAmnesa.
      */
     // TODO: Rename and change types and number of parameters
-    public static PemeriksaanAmnesa newInstance(int param1,String unameibu, String unamebidan) {
+    public static PemeriksaanAmnesa newInstance(int param1,String unameibu, String ke) {
         PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2,unameibu);
-        args.putString(ARG_PARAM3,unamebidan);
+        args.putString(ARG_PARAM3,ke);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,7 +77,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         if (getArguments() != null) {
             position = getArguments().getInt(ARG_PARAM1);
             usernameibu = getArguments().getString(ARG_PARAM2);
-            usernamebidan = getArguments().getString(ARG_PARAM3);
+            ke = getArguments().getString(ARG_PARAM3);
             data = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM4);
         }
     }
@@ -227,7 +224,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         }
         data.put("penolong",peno.toString());
         //get username ibu and bidan
-        data.put("usernamebidan",usernamebidan);
+        data.put("ke", ke);
         data.put("usernameibu",usernameibu);
 
         mListener.kumpulinData(data);

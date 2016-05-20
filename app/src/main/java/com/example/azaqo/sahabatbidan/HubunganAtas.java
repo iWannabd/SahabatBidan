@@ -17,7 +17,7 @@ import java.util.HashMap;
  * kelas ini digunakan oleh beberapa kelas lain untuk melakukan http request
  */
 public class HubunganAtas extends AsyncTask<String[],Void,Void> {
-    DataPasien activity;
+    DatadataKehamilan datadataKehamilan;
     DataPasiens activ;
     DataPasiens.PlaceholderFragment pasien;
     PemeriksaanAmnesa fragment;
@@ -29,34 +29,26 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     String flag = ""; //sebagai penanda kelas digunakan oleh kelas mana
     View view = null;
 
-    public HubunganAtas(DataPasien activity, Context context, String url) {
-        this.activity = activity;
-        this.context = context;
+    //FragmentDataLengkapIbu
+    public HubunganAtas(FragmentDataLengkapIbu detil, String url) {
+        this.detil = detil;
         this.url = url;
-        detil = null;
     }
 
     public HubunganAtas(DataPasiens.PlaceholderFragment pasien, String url) {
         this.pasien = pasien;
         this.url = url;
     }
+    //DatadataKehamilan
+    public HubunganAtas(DatadataKehamilan datadataKehamilan, String url, HashMap<String, String> data) {
+        this.datadataKehamilan = datadataKehamilan;
+        this.url = url;
+        this.data = data;
+    }
 
     public HubunganAtas(String url, DataPasiens activ) {
         this.url = url;
         this.activ = activ;
-    }
-
-    public HubunganAtas(DataPasien activity, String url, String flag) {
-        this.activity = activity;
-        this.url = url;
-        this.flag = flag;
-    }
-
-    public HubunganAtas(FragmentDataLengkapIbu detil, Context context, String url) {
-        this.detil = detil;
-        this.context = context;
-        this.url = url;
-        activity = null;
     }
     //untuk upload data pemeriksaan
     public HubunganAtas(Context context, String url,HashMap<String,String> data,String flag) {
@@ -95,15 +87,14 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         try {
-            if (activity!=null && !flag.equals("pairing")) activity.setDatapasien(result);
             if (detil!=null) detil.setDatapasien(result);
             if (flag.equals("riwayat")) Toast.makeText(context,result,Toast.LENGTH_LONG).show();
             if (fragment!=null && flag.equals("loaddata")) fragment.setDataRiwayatHamil(view,result);
             if (fragment!=null && flag.equals("penyakit")) fragment.setRiwayatPenyakit(view,result);
             if (fragment!=null && flag.equals("keluhan")) fragment.setDataKeluahan(view,result);
             if (fragment!=null && flag.equals("umumperiksa")) fragment.setDataPemeriksaanUmum(view,result);
-            if (flag.equals("pairing")) Toast.makeText(activity,result,Toast.LENGTH_SHORT).show();
             if (pasien!=null) pasien.setDatapasien(result);
+            if (datadataKehamilan!=null) datadataKehamilan.setDatadatakehamilan(result);
             if (activ!=null) {
                 Fragment page = activ.getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + activ.mViewPager.getCurrentItem());
                 if (activ.mViewPager.getCurrentItem() == 0 && page != null) ((DataPasiens.PlaceholderFragment)page).setDatapasien(result);

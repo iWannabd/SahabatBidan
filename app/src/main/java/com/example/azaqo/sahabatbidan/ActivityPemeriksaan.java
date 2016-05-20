@@ -33,7 +33,6 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    String bidan;
     HashMap<String,String> datapemeriksaanAll = new HashMap<>();
 
     @Override
@@ -51,9 +50,6 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        SharedPreferences sp = getSharedPreferences("Data Dasar",MODE_PRIVATE);
-        bidan = sp.getString("SESSION_LOGIN","Bidan");
 
     }
 
@@ -112,7 +108,7 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
                 case 5:
                     return PemeriksaanAmnesa.newInstancedataperiksa(position,datapemeriksaanAll);
                 default:
-                    return PemeriksaanAmnesa.newInstance(position,getIntent().getStringExtra("unameibu"),bidan);
+                    return PemeriksaanAmnesa.newInstance(position,getIntent().getStringExtra("unameibu"),getIntent().getStringExtra("ke"));
             }
         }
 

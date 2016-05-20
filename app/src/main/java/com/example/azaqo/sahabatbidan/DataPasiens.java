@@ -209,6 +209,7 @@ public class DataPasiens extends AppCompatActivity implements PairingDialog.Noti
             datapasien.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //menampilakn data kehamilan-kehamilan
                     HashMap<String,String> o =  (HashMap<String, String>) parent.getItemAtPosition(position);
                     //mendapatkan username di dalam kurung
                     Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(o.get("line1"));
@@ -217,7 +218,7 @@ public class DataPasiens extends AppCompatActivity implements PairingDialog.Noti
                         uname = m.group(1);
                     }
                     Log.d("PHP", "onItemClick: "+uname);
-                    Intent ten = new Intent(getContext(),ActivityPemeriksaan.class);
+                    Intent ten = new Intent(getContext(),DatadataKehamilan.class);
                     ten.putExtra("unameibu",uname);
                     startActivity(ten);
                 }
