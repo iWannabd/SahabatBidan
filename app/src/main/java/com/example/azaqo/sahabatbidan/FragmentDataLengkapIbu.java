@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -65,17 +66,33 @@ public class FragmentDataLengkapIbu extends Fragment {
     }
 
     ListView datalengkap;
+    EditText[] handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_data_lengkap_ibu, container, false);
-        datalengkap = (ListView) view.findViewById(R.id.listDataLengIbu);
+//        datalengkap = (ListView) view.findViewById(R.id.listDataLengIbu);
         //satu parameter lagi
         new HubunganAtas(this,"http://sahabatbundaku.org/request_android/pemeriksaan_pidan_1.php")
                 .execute(new String[]{"user"},new String[]{usernameibu});
-
+        handler = new EditText[]{
+                (EditText) view.findViewById(R.id.email),
+                (EditText) view.findViewById(R.id.username),
+                (EditText) view.findViewById(R.id.nama),
+                (EditText) view.findViewById(R.id.umur),
+                (EditText) view.findViewById(R.id.sukubangsa),
+                (EditText) view.findViewById(R.id.agama),
+                (EditText) view.findViewById(R.id.rtrw),
+                (EditText) view.findViewById(R.id.kecamatan),
+                (EditText) view.findViewById(R.id.pendidikan),
+                (EditText) view.findViewById(R.id.pekerjaan),
+                (EditText) view.findViewById(R.id.nomorhp),
+                (EditText) view.findViewById(R.id.alamat),
+                (EditText) view.findViewById(R.id.keludes),
+                (EditText) view.findViewById(R.id.kota),
+        };
         return view;
     }
 
@@ -86,26 +103,9 @@ public class FragmentDataLengkapIbu extends Fragment {
         String[] keys = {"email","username","nama","umur","sukubangsa","agama","rt/rw","kecamatan","pendidikan","pekerjaan","nomorhp","alamat","keludes","kota"};
         String[] explanations = {"Email","Username","Nama","Umur","Sukubangsa","Agama","RT/RW","Kecamatan","Pendidikan","Pekerjaan","Kontak","Alammat","Keluarahan/Desa","Kota"};
 
-
         for (int i = 0; i < keys.length; i++) {
-            try {
-                datum = new HashMap<>();
-                datum.put("line1",explanations[i]);
-                datum.put("line2",pasien.getString(keys[i]));
-                data.add(datum);
-            }catch (JSONException e){
-                e.printStackTrace();
-            }
+            handler[i].setText(pasien.getString(keys[i]));
         }
-
-        SimpleAdapter adapter = new SimpleAdapter(
-                getActivity(),
-                data,
-                android.R.layout.simple_list_item_2,
-                new String[]{"line1","line2"},
-                new int[]{android.R.id.text1,android.R.id.text2});
-
-        datalengkap.setAdapter(adapter);
     }
 
 

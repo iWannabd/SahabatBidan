@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DataPasiens extends AppCompatActivity implements PairingDialog.NoticeDialogFragment {
+public class DataPasiens extends AppCompatActivity implements PairingDialog.NoticeDialogFragment,TanyaDialog.ApaYangTerjadi {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -133,6 +133,12 @@ public class DataPasiens extends AppCompatActivity implements PairingDialog.Noti
         new HubunganAtas("http://sahabatbundaku.org/request_android/search_ibu.php",this).execute(new String[]{"uname"},new String[]{bidan});
     }
 
+    @Override
+    public void hapuspressed(String uname) {
+        new HubunganAtas("http://sahabatbundaku.org/request_android/unpairing_ibubidan.php",this).execute(new String[]{"usernameibu","usernamebidan"},new String[]{uname,bidan});
+        new HubunganAtas("http://sahabatbundaku.org/request_android/search_ibu.php",this).execute(new String[]{"uname"},new String[]{bidan});
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -218,6 +224,22 @@ public class DataPasiens extends AppCompatActivity implements PairingDialog.Noti
                     Intent ten = new Intent(getContext(),DatadataKehamilan.class);
                     ten.putExtra("unameibu",uname);
                     startActivity(ten);
+                }
+            });
+            datapasien.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    //menampilakn data kehamilan-kehamilan
+                    HashMap<String,String> o =  (HashMap<String, String>) parent.getItemAtPosition(position);
+                    //mendapatkan username di dalam kurung
+                    Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(o.get("line1"));
+                    String uname = "";
+                    while(m.find()) {
+                        uname = m.group(1);
+                    }
+                    DialogFragment df = TanyaDialog.newInstance(uname);
+                    df.show(getActivity().getFragmentManager(),"hapusga");
+                    return true;
                 }
             });
         }
