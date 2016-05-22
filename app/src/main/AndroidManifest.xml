@@ -53,6 +53,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.azaqo.sahabatbidan.DataPasiens" />
         </activity>
+        <activity
+            android:name=".DataLengkapIbu"
+            android:label="@string/title_activity_data_lengkap_ibu"
+            android:parentActivityName=".DataPasiens"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.azaqo.sahabatbidan.DataPasiens" />
+        </activity>
     </application>
 
 </manifest>

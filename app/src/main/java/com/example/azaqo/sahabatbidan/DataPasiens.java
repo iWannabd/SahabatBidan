@@ -221,7 +221,7 @@ public class DataPasiens extends AppCompatActivity implements PairingDialog.Noti
                         uname = m.group(1);
                     }
                     Log.d("PHP", "onItemClick: "+uname);
-                    Intent ten = new Intent(getContext(),DatadataKehamilan.class);
+                    Intent ten = new Intent(getContext(),DataLengkapIbu.class);
                     ten.putExtra("unameibu",uname);
                     startActivity(ten);
                 }

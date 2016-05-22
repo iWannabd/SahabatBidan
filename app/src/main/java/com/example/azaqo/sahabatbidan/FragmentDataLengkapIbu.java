@@ -36,7 +36,11 @@ public class FragmentDataLengkapIbu extends Fragment {
     // TODO: Rename and change types of parameters
     private String usernameibu;
 
-    private PemeriksaanListener mListener;
+    private DataIbu mListener;
+
+    public interface DataIbu{
+        public void doSomething();
+    }
 
     public FragmentDataLengkapIbu() {
         // Required empty public constructor
@@ -66,7 +70,6 @@ public class FragmentDataLengkapIbu extends Fragment {
         }
     }
 
-    ListView datalengkap;
     EditText[] handler;
 
     @Override
@@ -128,8 +131,8 @@ public class FragmentDataLengkapIbu extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof PemeriksaanListener) {
-            mListener = (PemeriksaanListener) context;
+        if (context instanceof DataIbu) {
+            mListener = (DataIbu) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement PemeriksaanListener");

@@ -79,4 +79,5 @@
     </string-array>
     <string name="title_activity_data_pasiens">Data Pasien</string>
     <string name="title_activity_datadata_kehamilan">Data Kehamilan</string>
+    <string name="title_activity_data_lengkap_ibu">DataLengkapIbu</string>
 </resources>
