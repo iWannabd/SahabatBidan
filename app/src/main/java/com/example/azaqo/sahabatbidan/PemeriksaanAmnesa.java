@@ -11,10 +11,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 
+import org.joda.time.DateTime;
+import org.joda.time.Weeks;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -147,7 +152,26 @@ public class  PemeriksaanAmnesa extends Fragment {
 
 
     public View kesimpulan(View view){
-        Log.d("PHP", "kesimpulan: "+data.get("hpmt"));
+        Log.d("PHP", "kesimpulan: "+data);
+        //g and p
+        TextView tentang  = (TextView) view.findViewById(R.id.tentang);
+        String s = data.get("hamilke") + " dan "+ data.get("jumlahir");
+        tentang.setText(s);
+
+        //taksiran
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        DateTime hpmt = formatter.parseDateTime(data.get("hpmt"));
+        hpmt = hpmt.plusYears(1);
+        hpmt = hpmt.minusMonths(3);
+        hpmt =hpmt.plusDays(7);
+        TextView taksiran = (TextView) view.findViewById(R.id.taksir);
+        taksiran.setText(formatter.print(hpmt));
+
+        //usia hamil
+        TextView usia = (TextView) view.findViewById(R.id.usiakehamilan);
+        usia.setText(Weeks.weeksBetween(hpmt,new DateTime()).getValue(0)+ " minggu");
+
+
         return view;
     }
 

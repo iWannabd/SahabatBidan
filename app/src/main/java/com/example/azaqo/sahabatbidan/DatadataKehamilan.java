@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DatadataKehamilan extends AppCompatActivity implements TambahKehamilanDialog.NoticeDialogFragment {
+public class DatadataKehamilan extends AppCompatActivity implements TambahKehamilanDialog.NoticeDialogFragment, TanyaDialog.ApaYangTerjadi {
 
     ListView datakehamilan;
     String usernameibu;
@@ -70,6 +70,16 @@ public class DatadataKehamilan extends AppCompatActivity implements TambahKehami
 
                 }
             });
+            datakehamilan.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    String item =(String) parent.getItemAtPosition(position);
+                    String ke = item.replaceAll("[^0-9]", "");
+                    DialogFragment df = TanyaDialog.newInstance(ke);
+                    df.show(getFragmentManager(),"hapusga");
+                    return true;
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -82,6 +92,18 @@ public class DatadataKehamilan extends AppCompatActivity implements TambahKehami
         send.put("unameibu",usernameibu);
         new HubunganAtas(this,"http://sahabatbundaku.org/request_android/tambah_kehamilan.php","tambah",send).execute();
         //refresh setelah tambah
+        HashMap<String,String> send2 = new HashMap<>();
+        send2.put("unameibu",usernameibu);
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/get_kehamilan.php",send2).execute();
+    }
+
+    @Override
+    public void hapuspressed(String uname) {
+        HashMap<String,String> send = new  HashMap<>();
+        send.put("ke",uname+"");
+        send.put("unameibu",usernameibu);
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/hapus_kehamilan.php","tambah",send).execute();
+        //refresh setelah hapus
         HashMap<String,String> send2 = new HashMap<>();
         send2.put("unameibu",usernameibu);
         new HubunganAtas(this,"http://sahabatbundaku.org/request_android/get_kehamilan.php",send2).execute();

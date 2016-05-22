@@ -1,5 +1,6 @@
 package com.example.azaqo.sahabatbidan;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,8 +18,9 @@ import java.util.HashMap;
  * kelas ini digunakan oleh beberapa kelas lain untuk melakukan http request
  */
 public class HubunganAtas extends AsyncTask<String[],Void,Void> {
+    Activity act;
     DatadataKehamilan datadataKehamilan;
-    DataPasiens activ;
+    DataPasiens dataPasiens;
     DataPasiens.PlaceholderFragment pasien;
     PemeriksaanAmnesa fragment;
     FragmentDataLengkapIbu detil;
@@ -38,9 +40,18 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     }
 
     //FragmentDataLengkapIbu
-    public HubunganAtas(FragmentDataLengkapIbu detil, String url) {
+    public HubunganAtas(FragmentDataLengkapIbu detil, String url,String flag) {
         this.detil = detil;
         this.url = url;
+        this.flag = flag;
+    }
+
+    //FragmentDataLengkapIbu update
+    public HubunganAtas(FragmentDataLengkapIbu detil, String url,String flag, HashMap<String,String> data) {
+        this.detil = detil;
+        this.url = url;
+        this.flag = flag;
+        this.data = data;
     }
 
     public HubunganAtas(DataPasiens.PlaceholderFragment pasien, String url) {
@@ -54,9 +65,9 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
         this.data = data;
     }
 
-    public HubunganAtas(String url, DataPasiens activ) {
+    public HubunganAtas(String url, DataPasiens dataPasiens) {
         this.url = url;
-        this.activ = activ;
+        this.dataPasiens = dataPasiens;
     }
     //untuk upload data pemeriksaan
     public HubunganAtas(Context context, String url,HashMap<String,String> data,String flag) {
@@ -95,7 +106,8 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         try {
-            if (detil!=null) detil.setDatapasien(result);
+            if (detil!=null && flag.equals("get")) detil.setDatapasien(result);
+            if (detil!=null && flag.equals("update")) Toast.makeText(detil.getActivity(),result,Toast.LENGTH_SHORT).show();
             if (flag.equals("riwayat")) Toast.makeText(context,result,Toast.LENGTH_LONG).show();
             if (fragment!=null && flag.equals("loaddata")) fragment.setDataRiwayatHamil(view,result);
             if (fragment!=null && flag.equals("penyakit")) fragment.setRiwayatPenyakit(view,result);
@@ -104,9 +116,9 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
             if (pasien!=null) pasien.setDatapasien(result);
             if (datadataKehamilan!=null) datadataKehamilan.setDatadatakehamilan(result);
             if (datadataKehamilan!=null && flag.equals("tambah")) Toast.makeText(datadataKehamilan,result,Toast.LENGTH_SHORT).show();
-            if (activ!=null) {
-                Fragment page = activ.getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + activ.mViewPager.getCurrentItem());
-                if (activ.mViewPager.getCurrentItem() == 0 && page != null) ((DataPasiens.PlaceholderFragment)page).setDatapasien(result);
+            if (dataPasiens !=null) {
+                Fragment page = dataPasiens.getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + dataPasiens.mViewPager.getCurrentItem());
+                if (dataPasiens.mViewPager.getCurrentItem() == 0 && page != null) ((DataPasiens.PlaceholderFragment)page).setDatapasien(result);
             }
             Log.d("PHP", "onPostExecute:"+result);
         } catch (JSONException e) {

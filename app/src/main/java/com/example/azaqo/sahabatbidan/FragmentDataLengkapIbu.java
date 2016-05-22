@@ -3,12 +3,13 @@ package com.example.azaqo.sahabatbidan;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,7 +76,7 @@ public class FragmentDataLengkapIbu extends Fragment {
         View view = inflater.inflate(R.layout.fragment_data_lengkap_ibu, container, false);
 //        datalengkap = (ListView) view.findViewById(R.id.listDataLengIbu);
         //satu parameter lagi
-        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/pemeriksaan_pidan_1.php")
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/pemeriksaan_pidan_1.php","get")
                 .execute(new String[]{"user"},new String[]{usernameibu});
         handler = new EditText[]{
                 (EditText) view.findViewById(R.id.email),
@@ -93,19 +94,34 @@ public class FragmentDataLengkapIbu extends Fragment {
                 (EditText) view.findViewById(R.id.keludes),
                 (EditText) view.findViewById(R.id.kota),
         };
+        Button but = (Button) view.findViewById(R.id.btn_update);
+        but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateData();
+            }
+        });
         return view;
     }
 
+    String[] getkeys = {"email","username","nama","umur","sukubangsa","agama","rt/rw","kecamatan","pendidikan","pekerjaan","nomorhp","alamat","keludes","kota"};
+    String[] updatekeys = {"email","username","nama","umur","sukubangsa","agama","rtrw","kecamatan","pendidikan","pekerjaan","nomorhp","alamat","keludes","kota"};
+
     public void setDatapasien(String jsonpasien) throws JSONException {
         JSONObject pasien = new JSONObject(jsonpasien);
-        List<Map<String,String>> data = new ArrayList<>();
-        Map<String,String> datum;
-        String[] keys = {"email","username","nama","umur","sukubangsa","agama","rt/rw","kecamatan","pendidikan","pekerjaan","nomorhp","alamat","keludes","kota"};
-        String[] explanations = {"Email","Username","Nama","Umur","Sukubangsa","Agama","RT/RW","Kecamatan","Pendidikan","Pekerjaan","Kontak","Alammat","Keluarahan/Desa","Kota"};
-
-        for (int i = 0; i < keys.length; i++) {
-            handler[i].setText(pasien.getString(keys[i]));
+        for (int i = 0; i < getkeys.length; i++) {
+            handler[i].setText(pasien.getString(getkeys[i]));
         }
+    }
+
+    public void UpdateData(){
+        HashMap<String,String> send = new HashMap<>();
+        for (int i = 0; i < handler.length; i++) {
+            send.put(updatekeys[i],handler[i].getText().toString());
+        }
+        Log.d("PHP", "UpdateData: "+send);
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/update_ibu.php","update",send).execute();
+
     }
 
 

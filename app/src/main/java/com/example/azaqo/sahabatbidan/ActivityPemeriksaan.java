@@ -124,7 +124,7 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0: return "Data Lengkap";
-                case 1: return "Kehamilan";
+                case 1: return "Riwayat";
                 case 2: return "Penyakit";
                 case 3: return "Keluhan";
                 case 4: return "Pemeriksaan";
