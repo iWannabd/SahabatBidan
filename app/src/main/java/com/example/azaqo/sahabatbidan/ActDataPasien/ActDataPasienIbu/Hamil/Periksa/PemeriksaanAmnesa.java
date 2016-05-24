@@ -1,6 +1,7 @@
 package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -37,9 +38,11 @@ public class  PemeriksaanAmnesa extends Fragment {
     private static final String POSITION = "param1";
     private static final String IDPERIKSA = "param2";
     private static final String ARG_PARAM4 = "param4";
+    private static final String IDHAMIL = "param3";
 
     private int position;
     private String idpemeriksaan;
+    private String idkehamilan;
     private HashMap<String,String> data;
 
     private PemeriksaanListener mListener;
@@ -55,11 +58,21 @@ public class  PemeriksaanAmnesa extends Fragment {
      * @param position Parameter 1. digunakan untuk posisi
      * @return A new instance of fragment PemeriksaanAmnesa.
      */
-    public static PemeriksaanAmnesa newInstance(int position,String idpemeriksaan) {
+    public static PemeriksaanAmnesa newInstance(int position,String idpemeriksaan,String idHamil) {
         PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
         Bundle args = new Bundle();
         args.putInt(POSITION, position);
         args.putString(IDPERIKSA,idpemeriksaan);
+        args.putString(IDHAMIL,idHamil);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static PemeriksaanAmnesa newInstance(String idkehamilan) {
+
+        Bundle args = new Bundle();
+        args.putString(IDHAMIL,idkehamilan);
+        PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,6 +93,8 @@ public class  PemeriksaanAmnesa extends Fragment {
             position = getArguments().getInt(POSITION);
             idpemeriksaan = getArguments().getString(IDPERIKSA);
             data = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM4);
+            idkehamilan = getArguments().getString(IDHAMIL);
+
         }
     }
     View view;
@@ -245,8 +260,11 @@ public class  PemeriksaanAmnesa extends Fragment {
                 peno.add(i);
         }
         data.put("penolong",peno.toString());
-        //put username ibu and hamilke
+        //put idpemeriksaan
         data.put("idpemeriksaan", idpemeriksaan);
+        data.put("idkehamilan",idkehamilan);
+        SharedPreferences sp = getActivity().getSharedPreferences("Data Dasar",Context.MODE_PRIVATE);
+        data.put("usernamebidan",sp.getString("SESSION_LOGIN","Bidan"));
 
         mListener.kumpulinData(data);
     }
@@ -397,6 +415,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         getdata.put("idpemeriksaan", idpemeriksaan);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_umum.php","umumperiksa",view,this).execute();
         Button but = (Button) view.findViewById(R.id.btnSubmitUmum);
+        Button baru = (Button) view.findViewById(R.id.btnSubmitBaru);
 
         but.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -406,6 +425,16 @@ public class  PemeriksaanAmnesa extends Fragment {
 
             }
         });
+
+        baru.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                simpan4(view);
+                mListener.uploadDataBaru();
+            }
+        });
+
+
 
         return view;
     }

@@ -1,5 +1,6 @@
 package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
@@ -53,7 +54,6 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        datapemeriksaanAll.put("idpemeriksaan",getIntent().getStringExtra("idpemeriksaan"));
 
     }
 
@@ -89,6 +89,13 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
     }
 
     @Override
+    public void uploadDataBaru() {
+        Log.d("PHP", "uploadDataBaru: "+datapemeriksaanAll);
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/insert_pemeriksaan.php",datapemeriksaanAll,"riwayat")
+                .execute();
+    }
+
+    @Override
     public void geser() {
         mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
     }
@@ -112,7 +119,8 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
                 case 4:
                     return PemeriksaanAmnesa.newInstancedataperiksa(position,datapemeriksaanAll);
                 default:
-                    return PemeriksaanAmnesa.newInstance(position,getIntent().getStringExtra("idpemeriksaan"));
+                    Intent ten  = getIntent();
+                    return PemeriksaanAmnesa.newInstance(position,ten.getStringExtra("idpemeriksaan"),ten.getStringExtra("idkehamilan"));
             }
         }
 

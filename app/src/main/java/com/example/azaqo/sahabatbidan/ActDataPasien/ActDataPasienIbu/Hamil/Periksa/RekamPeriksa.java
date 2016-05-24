@@ -2,6 +2,7 @@ package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Peri
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,13 @@ public class RekamPeriksa extends AppCompatActivity {
         HashMap<String,String> send = new HashMap<String,String>();
         send.put("idkehamilan",idkehamilan);
         new Request(send).execute("http://sahabatbundaku.org/request_android/get_record_pemeriksaan.php");
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public void setData(final JSONArray jsonArray) throws JSONException {
@@ -50,6 +58,7 @@ public class RekamPeriksa extends AppCompatActivity {
                 try {
                     Intent ten = new Intent(getBaseContext(),ActivityPemeriksaan.class);
                     String selectedid = jsonArray.getJSONObject(position).getString("idpemeriksaan");
+                    ten.putExtra("idkehamilan",idkehamilan);
                     ten.putExtra("idpemeriksaan",selectedid);
                     startActivity(ten);
                 } catch (JSONException e) {
