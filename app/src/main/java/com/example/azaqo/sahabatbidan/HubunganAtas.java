@@ -8,6 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.DataLengkapIbu;
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa.PemeriksaanAmnesa;
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.DaftarKehamilanFragment;
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.FragmentDataLengkapIbu;
+import com.example.azaqo.sahabatbidan.ActDataPasien.DataPasiens;
+
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -19,7 +25,8 @@ import java.util.HashMap;
  */
 public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     Activity act;
-    DatadataKehamilan datadataKehamilan;
+    DataLengkapIbu dataLengkapIbu;
+    DaftarKehamilanFragment datadataKehamilan;
     DataPasiens dataPasiens;
     DataPasiens.PlaceholderFragment pasien;
     PemeriksaanAmnesa fragment;
@@ -31,8 +38,15 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
     String flag = ""; //sebagai penanda kelas digunakan oleh kelas mana
     View view;
 
+    public HubunganAtas(DataLengkapIbu dataLengkapIbu, String url, String flag, DataPasiens dataPasiens) {
+        this.dataLengkapIbu = dataLengkapIbu;
+        this.url = url;
+        this.flag = flag;
+        this.dataPasiens = dataPasiens;
+    }
+
     //tambah kehamilan
-    public HubunganAtas(DatadataKehamilan datadataKehamilan, String url, String flag,HashMap<String,String> data) {
+    public HubunganAtas(DaftarKehamilanFragment datadataKehamilan, String url, String flag,HashMap<String,String> data) {
         this.datadataKehamilan = datadataKehamilan;
         this.url = url;
         this.flag = flag;
@@ -58,8 +72,8 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
         this.pasien = pasien;
         this.url = url;
     }
-    //DatadataKehamilan
-    public HubunganAtas(DatadataKehamilan datadataKehamilan, String url, HashMap<String, String> data) {
+
+    public HubunganAtas(DaftarKehamilanFragment datadataKehamilan, String url, HashMap<String, String> data) {
         this.datadataKehamilan = datadataKehamilan;
         this.url = url;
         this.data = data;
@@ -115,7 +129,7 @@ public class HubunganAtas extends AsyncTask<String[],Void,Void> {
             if (fragment!=null && flag.equals("umumperiksa")) fragment.setDataPemeriksaanUmum(view,result);
             if (pasien!=null) pasien.setDatapasien(result);
             if (datadataKehamilan!=null) datadataKehamilan.setDatadatakehamilan(result);
-            if (datadataKehamilan!=null && flag.equals("tambah")) Toast.makeText(datadataKehamilan,result,Toast.LENGTH_SHORT).show();
+            if (datadataKehamilan!=null && flag.equals("tambah")) Toast.makeText(datadataKehamilan.getActivity(),result,Toast.LENGTH_SHORT).show();
             if (dataPasiens !=null) {
                 Fragment page = dataPasiens.getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + dataPasiens.mViewPager.getCurrentItem());
                 if (dataPasiens.mViewPager.getCurrentItem() == 0 && page != null) ((DataPasiens.PlaceholderFragment)page).setDatapasien(result);

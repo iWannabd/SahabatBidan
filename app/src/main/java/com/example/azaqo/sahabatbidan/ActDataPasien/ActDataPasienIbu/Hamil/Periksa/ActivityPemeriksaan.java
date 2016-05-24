@@ -1,6 +1,5 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa;
 
-import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
@@ -12,10 +11,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.FragmentDataLengkapIbu;
+import com.example.azaqo.sahabatbidan.HubunganAtas;
+import com.example.azaqo.sahabatbidan.R;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActivityPemeriksaan extends AppCompatActivity implements PemeriksaanListener{
+public class ActivityPemeriksaan extends AppCompatActivity implements PemeriksaanListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -50,6 +53,7 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        datapemeriksaanAll.put("idpemeriksaan",getIntent().getStringExtra("idpemeriksaan"));
 
     }
 
@@ -79,7 +83,7 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
         //get dan set pemeriksaan dilakukan oleh masing masing fragment
         for (Map.Entry<String, String> entry : datapemeriksaanAll.entrySet())
             Log.d("PHP", "uploadData: "+entry.getKey()+": "+entry.getValue());
-        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/riwayat_hamil.php",datapemeriksaanAll,"riwayat")
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/update_pemeriksaan.php",datapemeriksaanAll,"riwayat")
                 .execute();
 
     }
@@ -105,30 +109,27 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position){
-                case 0:
-                    return FragmentDataLengkapIbu.newInstance(getIntent().getStringExtra("unameibu"));
-                case 5:
+                case 4:
                     return PemeriksaanAmnesa.newInstancedataperiksa(position,datapemeriksaanAll);
                 default:
-                    return PemeriksaanAmnesa.newInstance(position,getIntent().getStringExtra("unameibu"),getIntent().getStringExtra("ke"));
+                    return PemeriksaanAmnesa.newInstance(position,getIntent().getStringExtra("idpemeriksaan"));
             }
         }
 
         @Override
         public int getCount() {
             // Show 5 total pages.
-            return 6;
+            return 5;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0: return "Data Lengkap";
-                case 1: return "Riwayat";
-                case 2: return "Penyakit";
-                case 3: return "Keluhan";
-                case 4: return "Pemeriksaan";
-                case 5: return "Hasil";
+                case 0: return "Riwayat";
+                case 1: return "Penyakit";
+                case 2: return "Keluhan";
+                case 3: return "Pemeriksaan";
+                case 4: return "Hasil";
             }
             return null;
         }

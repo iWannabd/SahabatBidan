@@ -1,4 +1,4 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.ActDataPasien;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,7 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 
-public class TanyaDialog extends DialogFragment {
+public class HapusDialog extends DialogFragment {
 
     public interface ApaYangTerjadi{
        public void hapuspressed(String uname);
@@ -16,11 +16,11 @@ public class TanyaDialog extends DialogFragment {
 
     ApaYangTerjadi mListener;
 
-    public static TanyaDialog newInstance(String uname) {
+    public static HapusDialog newInstance(String uname) {
 
         Bundle args = new Bundle();
         args.putString("uname",uname);
-        TanyaDialog fragment = new TanyaDialog();
+        HapusDialog fragment = new HapusDialog();
         fragment.setArguments(args);
         return fragment;
     }

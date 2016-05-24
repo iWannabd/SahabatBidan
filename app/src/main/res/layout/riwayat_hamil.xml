@@ -9,7 +9,7 @@
     android:paddingTop="24dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
-    tools:context="com.example.azaqo.sahabatbidan.PemeriksaanAmnesa">
+    tools:context=".ActDataPasien.ActDataPasienIbu.Hamil.Periksa.PemeriksaanAmnesa">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

@@ -9,7 +9,7 @@
         android:paddingTop="24dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        tools:context="com.example.azaqo.sahabatbidan.PemeriksaanAmnesa">
+        tools:context=".ActDataPasien.ActDataPasienIbu.Hamil.Periksa.PemeriksaanAmnesa">
 
         <TextView
             android:layout_marginTop="5dp"

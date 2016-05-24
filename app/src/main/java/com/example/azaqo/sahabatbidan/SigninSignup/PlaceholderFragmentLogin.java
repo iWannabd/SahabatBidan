@@ -1,13 +1,11 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.SigninSignup;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +14,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.azaqo.sahabatbidan.R;
+import com.example.azaqo.sahabatbidan.UploadDataRegistrasi;
 
 /**
  * A placeholder fragment containing a simple view.

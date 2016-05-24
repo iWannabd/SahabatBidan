@@ -1,4 +1,4 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,15 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa.PemeriksaanListener;
+import com.example.azaqo.sahabatbidan.HubunganAtas;
+import com.example.azaqo.sahabatbidan.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -36,11 +36,7 @@ public class FragmentDataLengkapIbu extends Fragment {
     // TODO: Rename and change types of parameters
     private String usernameibu;
 
-    private DataIbu mListener;
-
-    public interface DataIbu{
-        public void doSomething();
-    }
+    private DataLengkapIbuListener mListener;
 
     public FragmentDataLengkapIbu() {
         // Required empty public constructor
@@ -131,11 +127,11 @@ public class FragmentDataLengkapIbu extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof DataIbu) {
-            mListener = (DataIbu) context;
+        if (context instanceof DataLengkapIbuListener) {
+            mListener = (DataLengkapIbuListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement PemeriksaanListener");
+                    + " must implement DataLengkapIbuListener");
         }
     }
 

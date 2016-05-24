@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.azaqo.sahabatbidan.ActDataPasien.DataPasiens;
+
 public class DataIbuatauAnak extends AppCompatActivity {
 
     @Override

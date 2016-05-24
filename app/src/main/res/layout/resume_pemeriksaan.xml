@@ -9,7 +9,7 @@
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        tools:context="com.example.azaqo.sahabatbidan.PemeriksaanAmnesa">
+        tools:context=".ActDataPasien.ActDataPasienIbu.Hamil.Periksa.PemeriksaanAmnesa">
 
     <!-- A CardView that contains a TextView -->
 

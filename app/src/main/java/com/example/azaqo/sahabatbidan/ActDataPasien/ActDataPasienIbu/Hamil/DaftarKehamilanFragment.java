@@ -1,10 +1,11 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil;
 
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,28 +14,26 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa.ActivityPemeriksaan;
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa.RekamPeriksa;
+import com.example.azaqo.sahabatbidan.HubunganAtas;
+import com.example.azaqo.sahabatbidan.R;
+import com.example.azaqo.sahabatbidan.ActDataPasien.HapusDialog;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DaftarKehamilanFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DaftarKehamilanFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DaftarKehamilanFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
     private String usernameibu;
 
-    private OnFragmentInteractionListener mListener;
+    private DataLengkapIbuListener mListener;
 
     public DaftarKehamilanFragment() {
         // Required empty public constructor
@@ -70,13 +69,27 @@ public class DaftarKehamilanFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_daftar_kehamilan, container, false);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        assert fab != null;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment df = new TambahKehamilanDialog();
+                df.show(getActivity().getFragmentManager(),"Tambah kehamilan");
+            }
+        });
         daftarkheamilan = (ListView) view.findViewById(R.id.daftarkehamilan);
+        HashMap<String,String> send = new HashMap<>();
+        send.put("unameibu",usernameibu);
+        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/get_kehamilan.php",send).execute();
+
+
         return view;
     }
 
     public void setDatadatakehamilan(String result){
         try {
-            JSONArray data_mentah = new JSONArray(result);
+            final JSONArray data_mentah = new JSONArray(result);
             List<String> dataset = new ArrayList<>();
             for (int i = 0; i < data_mentah.length(); i++) {
                 dataset.add("Kehamilan ke-"+data_mentah.getJSONObject(i).getString("ke"));
@@ -86,12 +99,13 @@ public class DaftarKehamilanFragment extends Fragment {
             daftarkheamilan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String item =(String) parent.getItemAtPosition(position);
-                    String ke = item.replaceAll("[^0-9]", "");
-                    Intent ten = new Intent(getContext(),ActivityPemeriksaan.class);
-                    ten.putExtra("ke",ke);
-                    ten.putExtra("unameibu",usernameibu);
-                    startActivity(ten);
+                    try {
+                        Intent ten = new Intent(getContext(),RekamPeriksa.class);
+                        ten.putExtra("idkehamilan",data_mentah.getJSONObject(position).getString("idHamil"));
+                        startActivity(ten);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             });
@@ -100,7 +114,7 @@ public class DaftarKehamilanFragment extends Fragment {
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     String item =(String) parent.getItemAtPosition(position);
                     String ke = item.replaceAll("[^0-9]", "");
-                    DialogFragment df = TanyaDialog.newInstance(ke);
+                    DialogFragment df = HapusDialog.newInstance(ke);
                     df.show(getActivity().getFragmentManager(),"hapusga");
                     return true;
                 }
@@ -110,21 +124,20 @@ public class DaftarKehamilanFragment extends Fragment {
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof DataLengkapIbuListener) {
+            mListener = (DataLengkapIbuListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement DataLengkapIbuListener");
         }
     }
 
@@ -144,8 +157,5 @@ public class DaftarKehamilanFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }

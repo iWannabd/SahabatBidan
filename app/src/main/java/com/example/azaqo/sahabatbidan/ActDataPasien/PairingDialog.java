@@ -1,4 +1,4 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.ActDataPasien;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
+import com.example.azaqo.sahabatbidan.R;
 
 /**
  * Created by azaqo on 12/05/2016.

@@ -1,4 +1,4 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.ActDataPasien;
 
 import android.app.DialogFragment;
 import android.app.SearchManager;
@@ -27,6 +27,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.DataLengkapIbu;
+import com.example.azaqo.sahabatbidan.HubunganAtas;
+import com.example.azaqo.sahabatbidan.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +42,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DataPasiens extends AppCompatActivity implements PairingDialog.NoticeDialogFragment,TanyaDialog.ApaYangTerjadi {
+public class DataPasiens extends AppCompatActivity implements PairingDialog.NoticeDialogFragment,HapusDialog.ApaYangTerjadi {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -237,7 +241,7 @@ public class DataPasiens extends AppCompatActivity implements PairingDialog.Noti
                     while(m.find()) {
                         uname = m.group(1);
                     }
-                    DialogFragment df = TanyaDialog.newInstance(uname);
+                    DialogFragment df = HapusDialog.newInstance(uname);
                     df.show(getActivity().getFragmentManager(),"hapusga");
                     return true;
                 }

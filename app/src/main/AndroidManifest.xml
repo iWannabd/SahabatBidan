@@ -15,7 +15,7 @@
             android:value=".DataPasienResult" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".SigninSignup.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -32,11 +32,11 @@
             android:name=".DataIbuatauAnak"
             android:label="Lihat Data" />
         <activity
-            android:name=".ActivityPemeriksaan"
+            android:name=".ActDataPasien.ActDataPasienIbu.Hamil.Periksa.ActivityPemeriksaan"
             android:label="@string/title_activity_pemeriksaan"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DataPasiens"
+            android:name=".ActDataPasien.DataPasiens"
             android:label="@string/title_activity_data_pasiens"
             android:parentActivityName=".DataIbuatauAnak"
             android:theme="@style/AppTheme.NoActionBar">
@@ -45,23 +45,15 @@
                 android:value="com.example.azaqo.sahabatbidan.DataIbuatauAnak" />
         </activity>
         <activity
-            android:name=".DatadataKehamilan"
-            android:label="@string/title_activity_datadata_kehamilan"
-            android:parentActivityName=".DataPasiens"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.azaqo.sahabatbidan.DataPasiens" />
-        </activity>
-        <activity
-            android:name=".DataLengkapIbu"
+            android:name=".ActDataPasien.ActDataPasienIbu.Hamil.DataLengkapIbu"
             android:label="@string/title_activity_data_lengkap_ibu"
-            android:parentActivityName=".DataPasiens"
+            android:parentActivityName=".ActDataPasien.DataPasiens"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.azaqo.sahabatbidan.DataPasiens" />
+                android:value=".ActDataPasien.DataPasiens" />
         </activity>
+        <activity android:name=".ActDataPasien.ActDataPasienIbu.Hamil.Periksa.RekamPeriksa"></activity>
     </application>
 
 </manifest>

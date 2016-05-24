@@ -1,4 +1,4 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.example.azaqo.sahabatbidan.HubunganAtas;
+import com.example.azaqo.sahabatbidan.R;
 
 import org.joda.time.DateTime;
 import org.joda.time.Weeks;
@@ -32,15 +34,12 @@ import java.util.List;
 public class  PemeriksaanAmnesa extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static final String ARG_PARAM3 = "param3";
+    private static final String POSITION = "param1";
+    private static final String IDPERIKSA = "param2";
     private static final String ARG_PARAM4 = "param4";
 
-    // TODO: Rename and change types of parameters
     private int position;
-    private String usernameibu;
-    private String ke;
+    private String idpemeriksaan;
     private HashMap<String,String> data;
 
     private PemeriksaanListener mListener;
@@ -53,16 +52,14 @@ public class  PemeriksaanAmnesa extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1. digunakan untuk posisi
+     * @param position Parameter 1. digunakan untuk posisi
      * @return A new instance of fragment PemeriksaanAmnesa.
      */
-    // TODO: Rename and change types and number of parameters
-    public static PemeriksaanAmnesa newInstance(int param1,String unameibu, String ke) {
+    public static PemeriksaanAmnesa newInstance(int position,String idpemeriksaan) {
         PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2,unameibu);
-        args.putString(ARG_PARAM3,ke);
+        args.putInt(POSITION, position);
+        args.putString(IDPERIKSA,idpemeriksaan);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,7 +67,7 @@ public class  PemeriksaanAmnesa extends Fragment {
     public static PemeriksaanAmnesa newInstancedataperiksa(int param1,HashMap<String,String> data) {
         PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
+        args.putInt(POSITION, param1);
         args.putSerializable(ARG_PARAM4, data);
         fragment.setArguments(args);
         return fragment;
@@ -80,9 +77,8 @@ public class  PemeriksaanAmnesa extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            position = getArguments().getInt(ARG_PARAM1);
-            usernameibu = getArguments().getString(ARG_PARAM2);
-            ke = getArguments().getString(ARG_PARAM3);
+            position = getArguments().getInt(POSITION);
+            idpemeriksaan = getArguments().getString(IDPERIKSA);
             data = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM4);
         }
     }
@@ -93,19 +89,19 @@ public class  PemeriksaanAmnesa extends Fragment {
 
         // Inflate the layout for this fragment
         switch (position){
-            case 1:
+            case 0:
                 view = inflater.inflate(R.layout.riwayat_hamil, container, false);
                 return periksariwayat(view);
-            case 2:
+            case 1:
                 view = inflater.inflate(R.layout.riwayat_penyakit,container,false);
                 return periksapenyakit(view);
-            case 3:
+            case 2:
                 view = inflater.inflate(R.layout.riwayat_keluhan,container,false);
                 return periksakeluhan(view);
-            case 4:
+            case 3:
                 view = inflater.inflate(R.layout.pemeriksaan_umum,container,false);
                 return periksaumum(view);
-            case 5:
+            case 4:
                 view = inflater.inflate(R.layout.resume_pemeriksaan,container,false);
                 return kesimpulan(view);
             default:
@@ -136,13 +132,13 @@ public class  PemeriksaanAmnesa extends Fragment {
         if (this.isVisible()){
             if(!isVisibleToUser){
                 switch (position){
-                    case 1:
+                    case 0:
                         simpan1(view);
                         break;
-                    case 2:
+                    case 1:
                         simpan2(view);
                         break;
-                    case 3:
+                    case 2:
                         simpan3(view);
                         break;
                 }
@@ -178,10 +174,8 @@ public class  PemeriksaanAmnesa extends Fragment {
     public View periksariwayat(View view){
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
-        getdata.put("usernameibu",usernameibu);
-        getdata.put("ke",ke);
+        getdata.put("idpemeriksaan", idpemeriksaan);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_pemeriksaan.php","loaddata",view,this).execute();
-
 
         final EditText hpmt = (EditText) view.findViewById(R.id.hpmt);
         final Button submit = (Button) view.findViewById(R.id.btnSubmitRiwayat);
@@ -252,8 +246,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         }
         data.put("penolong",peno.toString());
         //put username ibu and hamilke
-        data.put("ke", ke);
-        data.put("usernameibu",usernameibu);
+        data.put("idpemeriksaan", idpemeriksaan);
 
         mListener.kumpulinData(data);
     }
@@ -261,8 +254,7 @@ public class  PemeriksaanAmnesa extends Fragment {
     public View periksapenyakit(View view ){
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
-        getdata.put("usernameibu",usernameibu);
-        getdata.put("ke",ke);
+        getdata.put("idpemeriksaan", idpemeriksaan);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_penyakit.php","penyakit",view,this).execute();
 
         Spinner kont = (Spinner) view.findViewById(R.id.kontra);
@@ -326,8 +318,7 @@ public class  PemeriksaanAmnesa extends Fragment {
     public View periksakeluhan(View view){
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
-        getdata.put("usernameibu",usernameibu);
-        getdata.put("ke",ke);
+        getdata.put("idpemeriksaan", idpemeriksaan);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_keluhan.php","keluhan",view,this).execute();
 
 
@@ -403,8 +394,7 @@ public class  PemeriksaanAmnesa extends Fragment {
 
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
-        getdata.put("usernameibu",usernameibu);
-        getdata.put("ke",ke);
+        getdata.put("idpemeriksaan", idpemeriksaan);
         new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_umum.php","umumperiksa",view,this).execute();
         Button but = (Button) view.findViewById(R.id.btnSubmitUmum);
 

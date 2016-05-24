@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.azaqo.sahabatbidan.SigninSignup.LoginActivity;
+
 import java.io.IOException;
 
 public class UploadDataRegistrasi extends AsyncTask<String[],Void,String> {

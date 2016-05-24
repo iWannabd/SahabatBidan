@@ -1,25 +1,18 @@
-package com.example.azaqo.sahabatbidan;
+package com.example.azaqo.sahabatbidan.SigninSignup;
 
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.TextView;
+import com.example.azaqo.sahabatbidan.R;
 
-public class DataLengkapIbu extends AppCompatActivity implements FragmentDataLengkapIbu.DataIbu {
+public class LoginActivity extends AppCompatActivity implements PlaceholderFragmentLogin.ChangePage {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -35,35 +28,24 @@ public class DataLengkapIbu extends AppCompatActivity implements FragmentDataLen
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    String usernameibu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data_lengkap_ibu);
+        setContentView(R.layout.activity_login);
 
-        usernameibu = getIntent().getStringExtra("unameibu");
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_data_lengkap_ibu, menu);
+        getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
@@ -83,8 +65,8 @@ public class DataLengkapIbu extends AppCompatActivity implements FragmentDataLen
     }
 
     @Override
-    public void doSomething() {
-
+    public void geser(int pos) {
+        mViewPager.setCurrentItem(pos);
     }
 
     /**
@@ -101,27 +83,14 @@ public class DataLengkapIbu extends AppCompatActivity implements FragmentDataLen
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position){
-                case 0: return FragmentDataLengkapIbu.newInstance(usernameibu);
-                case 1: return DaftarKehamilanFragment.newInstance(usernameibu);
-                default:
-                    return null;
-            }
+            return PlaceholderFragmentLogin.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 1;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0: return "Data Lengkap Ibu";
-                case 1: return "Data Kehamilan";
-            }
-            return null;
+            return 2;
         }
     }
+
 }
