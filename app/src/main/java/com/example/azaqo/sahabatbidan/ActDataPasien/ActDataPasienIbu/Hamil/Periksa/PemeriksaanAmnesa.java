@@ -1,9 +1,12 @@
 package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.example.azaqo.sahabatbidan.HubunganAtas;
 import com.example.azaqo.sahabatbidan.R;
+import com.example.azaqo.sahabatbidan.RequestDatabase;
 
 import org.joda.time.DateTime;
 import org.joda.time.Weeks;
@@ -37,13 +41,13 @@ public class  PemeriksaanAmnesa extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String POSITION = "param1";
     private static final String IDPERIKSA = "param2";
-    private static final String ARG_PARAM4 = "param4";
     private static final String IDHAMIL = "param3";
+    private static final String IDPERIKSALAMA = "param4";
 
     private int position;
     private String idpemeriksaan;
     private String idkehamilan;
-    private HashMap<String,String> data;
+    private String idpemeriksaanlama;
 
     private PemeriksaanListener mListener;
 
@@ -58,30 +62,13 @@ public class  PemeriksaanAmnesa extends Fragment {
      * @param position Parameter 1. digunakan untuk posisi
      * @return A new instance of fragment PemeriksaanAmnesa.
      */
-    public static PemeriksaanAmnesa newInstance(int position,String idpemeriksaan,String idHamil) {
+    public static PemeriksaanAmnesa newInstance(int position,String idpemeriksaan,String idHamil, String idperiksalma) {
         PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
         Bundle args = new Bundle();
-        args.putInt(POSITION, position);
+        args.putInt(POSITION, position); //posisi fragment keberapa
         args.putString(IDPERIKSA,idpemeriksaan);
         args.putString(IDHAMIL,idHamil);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static PemeriksaanAmnesa newInstance(String idkehamilan) {
-
-        Bundle args = new Bundle();
-        args.putString(IDHAMIL,idkehamilan);
-        PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static PemeriksaanAmnesa newInstancedataperiksa(int param1,HashMap<String,String> data) {
-        PemeriksaanAmnesa fragment = new PemeriksaanAmnesa();
-        Bundle args = new Bundle();
-        args.putInt(POSITION, param1);
-        args.putSerializable(ARG_PARAM4, data);
+        args.putString(IDPERIKSALAMA,idperiksalma);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,9 +79,8 @@ public class  PemeriksaanAmnesa extends Fragment {
         if (getArguments() != null) {
             position = getArguments().getInt(POSITION);
             idpemeriksaan = getArguments().getString(IDPERIKSA);
-            data = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM4);
             idkehamilan = getArguments().getString(IDHAMIL);
-
+            idpemeriksaanlama = getArguments().getString(IDPERIKSALAMA);
         }
     }
     View view;
@@ -116,9 +102,6 @@ public class  PemeriksaanAmnesa extends Fragment {
             case 3:
                 view = inflater.inflate(R.layout.pemeriksaan_umum,container,false);
                 return periksaumum(view);
-            case 4:
-                view = inflater.inflate(R.layout.resume_pemeriksaan,container,false);
-                return kesimpulan(view);
             default:
                 return null;
         }
@@ -161,37 +144,16 @@ public class  PemeriksaanAmnesa extends Fragment {
         }
     }
 
-
-    public View kesimpulan(View view){
-        Log.d("PHP", "kesimpulan: "+data);
-        //g and p
-        TextView tentang  = (TextView) view.findViewById(R.id.tentang);
-        String s = data.get("hamilke") + " dan "+ data.get("jumlahir");
-        tentang.setText(s);
-
-        //taksiran
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-        DateTime hpmt = formatter.parseDateTime(data.get("hpmt"));
-        hpmt = hpmt.plusYears(1);
-        hpmt = hpmt.minusMonths(3);
-        hpmt =hpmt.plusDays(7);
-        TextView taksiran = (TextView) view.findViewById(R.id.taksir);
-        taksiran.setText(formatter.print(hpmt));
-
-        //usia hamil
-        TextView usia = (TextView) view.findViewById(R.id.usiakehamilan);
-        usia.setText(Weeks.weeksBetween(hpmt,new DateTime()).getValue(0)+ " minggu");
-
-
-        return view;
-    }
-
     public View periksariwayat(View view){
         //cek database dlu om
-        HashMap<String,String> getdata = new HashMap<>();
-        getdata.put("idpemeriksaan", idpemeriksaan);
-        new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_pemeriksaan.php","loaddata",view,this).execute();
-
+        HashMap<String, String> getdata = new HashMap<>();
+        if (!idpemeriksaan.equals("0")) {
+            getdata.put("idpemeriksaan", idpemeriksaan);
+            new HubunganAtas(getdata, "http://sahabatbundaku.org/request_android/get_pemeriksaan.php", "loaddata", view, this).execute();
+        } else { //periksa baru maka untuk riwayat hamil menggunakan data lama
+            getdata.put("idpemeriksaan", idpemeriksaanlama);
+            new Request(getdata,view,0).execute("http://sahabatbundaku.org/request_android/get_pemeriksaan.php");
+        }
         final EditText hpmt = (EditText) view.findViewById(R.id.hpmt);
         final Button submit = (Button) view.findViewById(R.id.btnSubmitRiwayat);
         hpmt.setOnClickListener(new View.OnClickListener() {
@@ -248,7 +210,10 @@ public class  PemeriksaanAmnesa extends Fragment {
         HashMap<String,String> data = new HashMap<>();
         //getting all value from edittext
         for (int i = 0; i < handler.length; i++) {
-            data.put(keys[i],handler[i].getText().toString());
+            if (!handler[i].getText().toString().matches(""))
+                data.put(keys[i],handler[i].getText().toString());
+            else
+                data.put(keys[i],"-1");
         }
         for (int i = 8; i <= 10; i++) {
             if (handler[i].getText().toString().equals("")) handler[i].setText("0");
@@ -272,9 +237,13 @@ public class  PemeriksaanAmnesa extends Fragment {
     public View periksapenyakit(View view ){
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
-        getdata.put("idpemeriksaan", idpemeriksaan);
-        new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_penyakit.php","penyakit",view,this).execute();
-
+        if (!idpemeriksaan.equals("0")) {
+            getdata.put("idpemeriksaan", idpemeriksaan);
+            new HubunganAtas(getdata, "http://sahabatbundaku.org/request_android/get_penyakit.php", "penyakit", view, this).execute();
+        } else { //untuk riwayat penyakit harus menggunakan data lama untuk membuat data baru
+            getdata.put("idpemeriksaan",idpemeriksaanlama);
+            new Request(getdata,view,1).execute("http://sahabatbundaku.org/request_android/get_penyakit.php");
+        }
         Spinner kont = (Spinner) view.findViewById(R.id.kontra);
         kont.setSelection(3);
 
@@ -422,7 +391,6 @@ public class  PemeriksaanAmnesa extends Fragment {
             public void onClick(View v) {
                 simpan4(view);
                 mListener.uploadData();
-
             }
         });
 
@@ -434,7 +402,22 @@ public class  PemeriksaanAmnesa extends Fragment {
             }
         });
 
+        if (!idpemeriksaan.equals("0")){
+            baru.setVisibility(View.GONE);
+        } else {
+            but.setVisibility(View.GONE);
+        }
 
+        Button resume = (Button) view.findViewById(R.id.btnResume);
+        resume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                simpan4(view);
+                Intent ten = new Intent(getActivity(),ResumeActivity.class);
+                ten.putExtra("datapemeriksaanAll",ActivityPemeriksaan.getDatapemeriksaanAll());
+                startActivity(ten);
+            }
+        });
 
         return view;
     }
@@ -450,6 +433,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (EditText) view.findViewById(R.id.tfu),
                 (EditText) view.findViewById(R.id.hb),
                 (EditText) view.findViewById(R.id.jantungjanin),
+                (EditText) view.findViewById(R.id.saran),
         };
 
         final Spinner spiners[] = {
@@ -461,7 +445,7 @@ public class  PemeriksaanAmnesa extends Fragment {
 
         HashMap<String,String> data = new HashMap<>();
 
-        String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin"};
+        String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran"};
         String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin"};
 
         for (int i = 0; i < keyedt.length; i++) {
@@ -482,7 +466,6 @@ public class  PemeriksaanAmnesa extends Fragment {
         if (!resultjson.equals("Belum menjalain pemeriksaan")) {
             Log.d("PHP", "setDataRiwayatHamil: loadharusnya");
             Log.d("PHP", "setDataRiwayatHamil: "+resultjson);
-            Toast.makeText(getActivity(),"Telah menjalani pemeriksaan",Toast.LENGTH_SHORT).show();
             JSONObject datariwayathamil = new JSONObject(resultjson);
             EditText[] handler = {
                     ((EditText) v.findViewById(R.id.hpmt)),
@@ -500,6 +483,9 @@ public class  PemeriksaanAmnesa extends Fragment {
             String[] konci = {"hpmt", "hamilke", "jumlahir", "jarakhamil", "normal", "sesar", "vaccum", "prematur", "bb1", "bb2", "bb3"};
             //set data untuk setiap edit text
             for (int i = 0; i < handler.length; i++) {
+                if(datariwayathamil.getString(konci[i]).equals("-1"))
+                handler[i].setText("");
+                else
                 handler[i].setText(datariwayathamil.getString(konci[i]));
             }
             //data untuk checkbox penolong
@@ -655,6 +641,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (EditText) view.findViewById(R.id.tfu),
                 (EditText) view.findViewById(R.id.hb),
                 (EditText) view.findViewById(R.id.jantungjanin),
+                (EditText) view.findViewById(R.id.saran),
         };
 
         final Spinner spiners[] = {
@@ -667,7 +654,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         if (!json.equals("Belum menjalain pemeriksaan")){
             JSONObject dataperiksa = new JSONObject(json);
 
-            String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin"};
+            String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran"};
             String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin"};
 
             int i = 0;
@@ -681,6 +668,31 @@ public class  PemeriksaanAmnesa extends Fragment {
             for (String k: kespin) {
                 spiners[i].setSelection(Integer.parseInt(dataperiksa.getString(k)));
                 i++;
+            }
+        }
+    }
+    public class Request extends RequestDatabase{
+        View view;
+        int flag;
+
+        public Request (HashMap<String, String> data,View v,int f) {
+            super(data);
+            this.view = v;
+            this.flag = f;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            try {
+                switch (flag){
+                    case 0: //riwayat hamil
+                        setDataRiwayatHamil(view,s);
+                    case 1:
+                        setRiwayatPenyakit(view,s);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }

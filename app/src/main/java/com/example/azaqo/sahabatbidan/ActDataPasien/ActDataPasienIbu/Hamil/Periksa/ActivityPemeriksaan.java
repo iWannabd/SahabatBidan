@@ -11,10 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.FragmentDataLengkapIbu;
-import com.example.azaqo.sahabatbidan.HubunganAtas;
 import com.example.azaqo.sahabatbidan.R;
+import com.example.azaqo.sahabatbidan.RequestDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +37,11 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    HashMap<String,String> datapemeriksaanAll = new HashMap<>();
+    private static HashMap<String,String> datapemeriksaanAll = new HashMap<>();
+
+    public static HashMap<String, String> getDatapemeriksaanAll() {
+        return datapemeriksaanAll;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,6 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -79,26 +82,24 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
 
     @Override
     public void uploadData() {
-        //upload semua data pemeriksaan pakai kelas HubunganAtas
-        //get dan set pemeriksaan dilakukan oleh masing masing fragment
-        for (Map.Entry<String, String> entry : datapemeriksaanAll.entrySet())
-            Log.d("PHP", "uploadData: "+entry.getKey()+": "+entry.getValue());
-        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/update_pemeriksaan.php",datapemeriksaanAll,"riwayat")
-                .execute();
-
+        Log.d("PHP", "uploadData: "+datapemeriksaanAll);
+        new Request(datapemeriksaanAll,0).execute("http://sahabatbundaku.org/request_android/update_pemeriksaan.php");
     }
 
     @Override
     public void uploadDataBaru() {
         Log.d("PHP", "uploadDataBaru: "+datapemeriksaanAll);
-        new HubunganAtas(this,"http://sahabatbundaku.org/request_android/insert_pemeriksaan.php",datapemeriksaanAll,"riwayat")
-                .execute();
+        new Request(datapemeriksaanAll,0).execute("http://sahabatbundaku.org/request_android/insert_pemeriksaan.php");
+    }
+
+    public void lihatResume(){
+        Intent ten = new Intent(this,ResumeActivity.class);
+        ten.putExtra("datapemeriksaanAll",datapemeriksaanAll);
+        startActivity(ten);
     }
 
     @Override
-    public void geser() {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
-    }
+    public void geser() { mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);}
 
 
     /**
@@ -115,31 +116,43 @@ public class ActivityPemeriksaan extends AppCompatActivity implements Pemeriksaa
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position){
-                case 4:
-                    return PemeriksaanAmnesa.newInstancedataperiksa(position,datapemeriksaanAll);
-                default:
-                    Intent ten  = getIntent();
-                    return PemeriksaanAmnesa.newInstance(position,ten.getStringExtra("idpemeriksaan"),ten.getStringExtra("idkehamilan"));
-            }
+            Intent ten  = getIntent();
+            return PemeriksaanAmnesa.newInstance(position,ten.getStringExtra("idpemeriksaan"),ten.getStringExtra("idkehamilan"),ten.getStringExtra("idpemeriksaanterbaru"));
+
         }
 
         @Override
         public int getCount() {
-            // Show 5 total pages.
-            return 5;
+            // Show 4 total pages.
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0: return "Riwayat";
-                case 1: return "Penyakit";
+                case 0: return "Riwayat kehamilan";
+                case 1: return "Riwayat penyakit";
                 case 2: return "Keluhan";
                 case 3: return "Pemeriksaan";
-                case 4: return "Hasil";
             }
             return null;
+        }
+    }
+    public class Request extends RequestDatabase{
+        int flag;
+        public Request(HashMap<String, String> data,int flag) {
+            super(data);
+            this.flag = flag;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            switch (flag){
+                case 0:
+                    Toast.makeText(getBaseContext(),s,Toast.LENGTH_SHORT).show();
+                    if (s.equals("Data Berhasil Dimasukkan")) lihatResume();
+            }
         }
     }
 }

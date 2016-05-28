@@ -1,6 +1,7 @@
 package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -111,6 +112,11 @@ public class FragmentDataLengkapIbu extends Fragment {
         for (int i = 0; i < getkeys.length; i++) {
             handler[i].setText(pasien.getString(getkeys[i]));
         }
+        //simpan username ibu ke shared preference
+        SharedPreferences sp = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor e =sp.edit();
+        e.putString("dataibu",jsonpasien);
+        e.commit();
     }
 
     public void UpdateData(){
@@ -120,6 +126,11 @@ public class FragmentDataLengkapIbu extends Fragment {
         }
         Log.d("PHP", "UpdateData: "+send);
         new HubunganAtas(this,"http://sahabatbundaku.org/request_android/update_ibu.php","update",send).execute();
+        //simpan username ibu ke shared preference
+        SharedPreferences sp = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = sp.edit();
+        e.putString("dataibu",new JSONObject(send).toString());
+        e.commit();
 
     }
 

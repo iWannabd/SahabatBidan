@@ -1,5 +1,6 @@
 package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.azaqo.sahabatbidan.ActDataPasien.HapusDialog;
 import com.example.azaqo.sahabatbidan.Okdeh;
 import com.example.azaqo.sahabatbidan.R;
 
@@ -22,9 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RekamPeriksa extends AppCompatActivity {
+public class RekamPeriksa extends AppCompatActivity implements HapusDialog.ApaYangTerjadi {
     ListView rekam;
     String idkehamilan;
+    FloatingActionButton fab;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +36,13 @@ public class RekamPeriksa extends AppCompatActivity {
         rekam = (ListView) findViewById(R.id.rekameriksa);
         Intent intent = getIntent();
         idkehamilan = intent.getStringExtra("idkehamilan");
+
         HashMap<String,String> send = new HashMap<String,String>();
         send.put("idkehamilan",idkehamilan);
         new Request(send).execute("http://sahabatbundaku.org/request_android/get_record_pemeriksaan.php");
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
     }
-
+    String selectedidpemeriksaan = "0";
     public void setData(final JSONArray jsonArray) throws JSONException {
         List<String> tanggaltanggal = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -66,6 +64,47 @@ public class RekamPeriksa extends AppCompatActivity {
                 }
             }
         });
+        rekam.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                DialogFragment df = new HapusDialog();
+                df.show(getFragmentManager(),"hapusrekam");
+                try {
+                    selectedidpemeriksaan = jsonArray.getJSONObject(position).getString("idpemeriksaan");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        });
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent ten = new Intent(getBaseContext(),ActivityPemeriksaan.class);
+                ten.putExtra("idkehamilan",idkehamilan);
+                ten.putExtra("idpemeriksaan","0");
+                try {
+                    String idpemeriksaanterbaru = jsonArray.getJSONObject(jsonArray.length()-1).getString("idpemeriksaan");
+                    ten.putExtra("idpemeriksaanterbaru",idpemeriksaanterbaru);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                startActivity(ten);
+            }
+        });
+
+    }
+
+    @Override
+    public void hapuspressed(String uname) {
+        HashMap<String,String> send = new HashMap<String,String>();
+        send.put("idkehamilan",idkehamilan);
+        send.put("idpemeriksaan",selectedidpemeriksaan);
+        new Request(send).execute("http://sahabatbundaku.org/request_android/delete_record_periksa.php");
+        new Request(send).execute("http://sahabatbundaku.org/request_android/get_record_pemeriksaan.php");
     }
 
     private class Request extends AsyncTask<String,Void,String>{
@@ -78,6 +117,7 @@ public class RekamPeriksa extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
+                Log.d("PHP", "doInBackground: "+data);
                 Okdeh ok  = new Okdeh();
                 return ok.doPostRequestData(params[0],data);
             } catch (IOException e) {
@@ -89,6 +129,7 @@ public class RekamPeriksa extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Log.d("PHP", "onPostExecute: rekam periksa "+s);
             try {
                 JSONArray jsonArray = new JSONArray(s);
                 setData(jsonArray);

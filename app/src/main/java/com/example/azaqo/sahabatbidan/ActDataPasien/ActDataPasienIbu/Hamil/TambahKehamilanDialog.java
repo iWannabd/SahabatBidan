@@ -3,7 +3,8 @@ package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -44,12 +45,12 @@ public class TambahKehamilanDialog extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         try {
-            mListener = (NoticeDialogFragment) activity;
+            mListener = (NoticeDialogFragment) getTargetFragment();
         } catch (ClassCastException e){
-            throw new ClassCastException(activity.toString() + "harus di implement bang");
+            throw new ClassCastException(" harus implemen interface yang ada di sini");
         }
     }
 }

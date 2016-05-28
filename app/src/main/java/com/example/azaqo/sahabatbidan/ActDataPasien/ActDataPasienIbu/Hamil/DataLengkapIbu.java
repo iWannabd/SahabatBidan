@@ -25,8 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class DataLengkapIbu extends AppCompatActivity
-        implements DataLengkapIbuListener,
-        HapusDialog.ApaYangTerjadi,TambahKehamilanDialog.NoticeDialogFragment {
+        implements DataLengkapIbuListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -89,30 +88,18 @@ public class DataLengkapIbu extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void hapuspressed(String uname) {
-        HashMap<String,String> send = new  HashMap<>();
-        send.put("ke",uname+"");
-        send.put("unameibu",usernameibu);
-        new Request(send,"http://sahabatbundaku.org/request_android/hapus_kehamilan.php","tambah").execute();
-        //refresh setelah hapus
-        HashMap<String,String> send2 = new HashMap<>();
-        send2.put("unameibu",usernameibu);
-        new Request(send2,"http://sahabatbundaku.org/request_android/get_kehamilan.php","update").execute();
-
-    }
-
-    @Override
-    public void onSimpanPressed(int selected) {
-        HashMap<String,String> send = new  HashMap<>();
-        send.put("ke",selected+"");
-        send.put("unameibu",usernameibu);
-        new Request(send,"http://sahabatbundaku.org/request_android/tambah_kehamilan.php","tambah").execute();
-        //refresh setelah tambah
-        HashMap<String,String> send2 = new HashMap<>();
-        send2.put("unameibu",usernameibu);
-        new Request(send2,"http://sahabatbundaku.org/request_android/get_kehamilan.php","update").execute();
-    }
+//    @Override
+//    public void hapuspressed(String uname) {
+//        HashMap<String,String> send = new  HashMap<>();
+//        send.put("ke",uname+"");
+//        send.put("unameibu",usernameibu);
+//        new Request(send,"http://sahabatbundaku.org/request_android/hapus_kehamilan.php","tambah").execute();
+//        //refresh setelah hapus
+//        HashMap<String,String> send2 = new HashMap<>();
+//        send2.put("unameibu",usernameibu);
+//        new Request(send2,"http://sahabatbundaku.org/request_android/get_kehamilan.php","update").execute();
+//
+//    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

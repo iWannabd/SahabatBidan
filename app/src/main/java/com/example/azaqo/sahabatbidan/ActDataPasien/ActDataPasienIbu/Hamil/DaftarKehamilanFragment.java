@@ -1,9 +1,9 @@
 package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil;
 
-import android.app.DialogFragment;
+import android.content.SharedPreferences;
+import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa.ActivityPemeriksaan;
 import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa.RekamPeriksa;
 import com.example.azaqo.sahabatbidan.HubunganAtas;
 import com.example.azaqo.sahabatbidan.R;
-import com.example.azaqo.sahabatbidan.ActDataPasien.HapusDialog;
+import com.example.azaqo.sahabatbidan.RequestDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DaftarKehamilanFragment extends Fragment {
+public class DaftarKehamilanFragment extends Fragment implements TambahKehamilanDialog.NoticeDialogFragment,HapusKehamilanDialog.SetelahHapus {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
@@ -64,6 +64,18 @@ public class DaftarKehamilanFragment extends Fragment {
 
     ListView daftarkheamilan;
 
+    public void ShowDialog(){
+        DialogFragment df = new TambahKehamilanDialog();
+        df.setTargetFragment(this,0);
+        df.show(getFragmentManager(),"Tambah kehamilan");
+    }
+
+    public void ShowHapusDialog(String selected){
+        DialogFragment df = HapusKehamilanDialog.newInstance(selected);
+        df.setTargetFragment(this,1);
+        df.show(getFragmentManager(),"hapusga");
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,16 +86,13 @@ public class DaftarKehamilanFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment df = new TambahKehamilanDialog();
-                df.show(getActivity().getFragmentManager(),"Tambah kehamilan");
+                ShowDialog();
             }
         });
         daftarkheamilan = (ListView) view.findViewById(R.id.daftarkehamilan);
         HashMap<String,String> send = new HashMap<>();
         send.put("unameibu",usernameibu);
         new HubunganAtas(this,"http://sahabatbundaku.org/request_android/get_kehamilan.php",send).execute();
-
-
         return view;
     }
 
@@ -114,8 +123,7 @@ public class DaftarKehamilanFragment extends Fragment {
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     String item =(String) parent.getItemAtPosition(position);
                     String ke = item.replaceAll("[^0-9]", "");
-                    DialogFragment df = HapusDialog.newInstance(ke);
-                    df.show(getActivity().getFragmentManager(),"hapusga");
+                    ShowHapusDialog(ke);
                     return true;
                 }
             });
@@ -147,15 +155,46 @@ public class DaftarKehamilanFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void onSimpanPressed(int selected) {
+        HashMap<String,String> send = new  HashMap<>();
+        send.put("ke",selected+"");
+        send.put("unameibu",usernameibu);
+        new Request(send,2).execute("http://sahabatbundaku.org/request_android/tambah_kehamilan.php");
+        //refresh setelah tambah
+        HashMap<String,String> send2 = new HashMap<>();
+        send2.put("unameibu",usernameibu);
+        new Request(send2,1).execute("http://sahabatbundaku.org/request_android/get_kehamilan.php");
 
+    }
+
+    @Override
+    public void HapusPressed(String selected) {
+        HashMap<String,String> send = new  HashMap<>();
+        send.put("ke",selected+"");
+        send.put("unameibu",usernameibu);
+        new Request(send,2).execute("http://sahabatbundaku.org/request_android/hapus_kehamilan.php");
+        //refresh setelah tambah
+        HashMap<String,String> send2 = new HashMap<>();
+        send2.put("unameibu",usernameibu);
+        new Request(send2,1).execute("http://sahabatbundaku.org/request_android/get_kehamilan.php");
+    }
+
+    public class Request extends RequestDatabase {
+        int flag;
+        @Override
+        protected void onPostExecute(String s) {
+            switch (flag) {
+                case 1:
+                    setDatadatakehamilan(s);
+                case 2:
+                    Toast.makeText(getContext(),s,Toast.LENGTH_SHORT).show();
+            }
+            super.onPostExecute(s);
+        }
+        public Request(HashMap<String, String> data,int flag) {
+            super(data);
+            this.flag = flag;
+        }
+    }
 }

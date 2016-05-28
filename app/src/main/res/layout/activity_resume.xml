@@ -9,9 +9,9 @@
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        tools:context=".ActDataPasien.ActDataPasienIbu.Hamil.Periksa.PemeriksaanAmnesa">
+        tools:context=".ActDataPasien.ActDataPasienIbu.Hamil.Periksa.ResumeActivity">
 
-    <!-- A CardView that contains a TextView -->
+        <!-- A CardView that contains a TextView -->
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="G dan P"
+                android:text="Kesimpulan"
                 android:textColor="#FFF"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
@@ -58,9 +58,9 @@
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
-        android:layout_height="72dp"
-        card_view:cardBackgroundColor="#8BC34A"
-        card_view:cardCornerRadius="4dp">
+            android:layout_height="72dp"
+            card_view:cardBackgroundColor="#8BC34A"
+            card_view:cardCornerRadius="4dp">
 
             <ImageView
                 android:layout_width="75dp"
@@ -242,13 +242,11 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="-"
-                android:id="@+id/saran"
+                android:id="@+id/sarann"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="35dp"
                 android:textColor="#FFF"/>
         </android.support.v7.widget.CardView>
-
-
 
     </LinearLayout>
 </ScrollView>
