@@ -211,16 +211,63 @@
             android:text="Keluar Darah Dari Kemaluan"
             android:id="@+id/darah"/>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnSubmitKeluhan"
-            android:layout_width="fill_parent"
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:text="Lanjut"
-            android:background="@color/colorAccent"
-            android:textColor="#fff"/>
+            android:textColor="@color/colorPrimary"
+            android:text="KELUHAN LAIN"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Bengkak pada muka/tungkai"
+            android:id="@+id/bengkakmuka"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Kembar 2 atau lebih"
+            android:id="@+id/kembar"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Kembar air"
+            android:id="@+id/kembarair"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Bayi mati dalam kandungan"
+            android:id="@+id/bayimati"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Preklamasi berat/kejang-kejang"
+            android:id="@+id/preklamasi"/>
+
+        <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnSubmitKeluhan"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:padding="12dp"
+        android:text="Lanjut"
+        android:background="@color/colorAccent"
+        android:textColor="#fff"/>
+
 
 
         </LinearLayout>

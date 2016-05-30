@@ -43,58 +43,76 @@ public class RekamPeriksa extends AppCompatActivity implements HapusDialog.ApaYa
 
     }
     String selectedidpemeriksaan = "0";
-    public void setData(final JSONArray jsonArray) throws JSONException {
+    public void setData(String jsonstring) {
         List<String> tanggaltanggal = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            tanggaltanggal.add(jsonArray.getJSONObject(i).getString("tanggalperiksa"));
-        }
-        ArrayAdapter<String> adapta = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,tanggaltanggal);
-        rekam.setAdapter(adapta);
-        rekam.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
+        try {
+            final JSONArray jsonArray = new JSONArray(jsonstring);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                tanggaltanggal.add(jsonArray.getJSONObject(i).getString("tanggalperiksa"));
+            }
+            ArrayAdapter<String> adapta = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,tanggaltanggal);
+            rekam.setAdapter(adapta);
+            rekam.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        Intent ten = new Intent(getBaseContext(),ActivityPemeriksaan.class);
+                        String selectedid = jsonArray.getJSONObject(position).getString("idpemeriksaan");
+                        ten.putExtra("idkehamilan",idkehamilan);
+                        ten.putExtra("idpemeriksaan",selectedid);
+                        startActivity(ten);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            rekam.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    DialogFragment df = new HapusDialog();
+                    df.show(getFragmentManager(),"hapusrekam");
+                    try {
+                        selectedidpemeriksaan = jsonArray.getJSONObject(position).getString("idpemeriksaan");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+            });
+            fab = (FloatingActionButton) findViewById(R.id.fab);
+            assert fab != null;
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     Intent ten = new Intent(getBaseContext(),ActivityPemeriksaan.class);
-                    String selectedid = jsonArray.getJSONObject(position).getString("idpemeriksaan");
                     ten.putExtra("idkehamilan",idkehamilan);
-                    ten.putExtra("idpemeriksaan",selectedid);
+                    ten.putExtra("idpemeriksaan","0");
+                    try {
+                        String idpemeriksaanterbaru = jsonArray.getJSONObject(0).getString("idpemeriksaan");
+                        ten.putExtra("idpemeriksaanterbaru",idpemeriksaanterbaru);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     startActivity(ten);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        });
-        rekam.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                DialogFragment df = new HapusDialog();
-                df.show(getFragmentManager(),"hapusrekam");
-                try {
-                    selectedidpemeriksaan = jsonArray.getJSONObject(position).getString("idpemeriksaan");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        });
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ten = new Intent(getBaseContext(),ActivityPemeriksaan.class);
-                ten.putExtra("idkehamilan",idkehamilan);
-                ten.putExtra("idpemeriksaan","0");
-                try {
-                    String idpemeriksaanterbaru = jsonArray.getJSONObject(jsonArray.length()-1).getString("idpemeriksaan");
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fab = (FloatingActionButton) findViewById(R.id.fab);
+            assert fab != null;
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent ten = new Intent(getBaseContext(),ActivityPemeriksaan.class);
+                    ten.putExtra("idkehamilan",idkehamilan);
+                    ten.putExtra("idpemeriksaan","0");
+                    String idpemeriksaanterbaru = "0";
                     ten.putExtra("idpemeriksaanterbaru",idpemeriksaanterbaru);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    startActivity(ten);
                 }
-                startActivity(ten);
-            }
-        });
+            });
+
+        }
 
     }
 
@@ -130,12 +148,7 @@ public class RekamPeriksa extends AppCompatActivity implements HapusDialog.ApaYa
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d("PHP", "onPostExecute: rekam periksa "+s);
-            try {
-                JSONArray jsonArray = new JSONArray(s);
-                setData(jsonArray);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            setData(s);
 
         }
     }

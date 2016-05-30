@@ -263,6 +263,10 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (CheckBox) view.findViewById(R.id.gula),
                 (CheckBox) view.findViewById(R.id.asma),
                 (CheckBox) view.findViewById(R.id.jantung),
+                (CheckBox) view.findViewById(R.id.pms),
+                (CheckBox) view.findViewById(R.id.malaria),
+                (CheckBox) view.findViewById(R.id.kurangdarah),
+                (CheckBox) view.findViewById(R.id.tpcparu),
         };
         final CheckBox penyakitx[] = {
                 (CheckBox) view.findViewById(R.id.darahTinggiturunan),
@@ -351,6 +355,12 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (CheckBox) view.findViewById(R.id.sesaknapas),
                 (CheckBox) view.findViewById(R.id.nyeripinggang),
                 (CheckBox) view.findViewById(R.id.darah),
+                (CheckBox) view.findViewById(R.id.bengkakmuka),
+                (CheckBox) view.findViewById(R.id.kembar),
+                (CheckBox) view.findViewById(R.id.kembarair),
+                (CheckBox) view.findViewById(R.id.bayimati),
+                (CheckBox) view.findViewById(R.id.preklamasi),
+
         };
 
         HashMap<String,String> data = new HashMap<>();
@@ -519,6 +529,9 @@ public class  PemeriksaanAmnesa extends Fragment {
                         (CheckBox) view.findViewById(R.id.gula),
                         (CheckBox) view.findViewById(R.id.asma),
                         (CheckBox) view.findViewById(R.id.jantung),
+                        (CheckBox) view.findViewById(R.id.malaria),
+                        (CheckBox) view.findViewById(R.id.kurangdarah),
+                        (CheckBox) view.findViewById(R.id.tpcparu),
                 };
                 final CheckBox penyakitx[] = {
                         (CheckBox) view.findViewById(R.id.darahTinggiturunan),
@@ -595,6 +608,11 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (CheckBox) view.findViewById(R.id.sesaknapas),
                 (CheckBox) view.findViewById(R.id.nyeripinggang),
                 (CheckBox) view.findViewById(R.id.darah),
+                (CheckBox) view.findViewById(R.id.bengkakmuka),
+                (CheckBox) view.findViewById(R.id.kembar),
+                (CheckBox) view.findViewById(R.id.kembarair),
+                (CheckBox) view.findViewById(R.id.bayimati),
+                (CheckBox) view.findViewById(R.id.preklamasi),
         };
 
         if (!json.equals("Belum menjalani pemeriksaan")){

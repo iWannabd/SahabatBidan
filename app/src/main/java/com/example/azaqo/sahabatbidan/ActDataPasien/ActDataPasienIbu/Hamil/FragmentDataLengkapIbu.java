@@ -112,11 +112,12 @@ public class FragmentDataLengkapIbu extends Fragment {
         for (int i = 0; i < getkeys.length; i++) {
             handler[i].setText(pasien.getString(getkeys[i]));
         }
-        //simpan username ibu ke shared preference
-        SharedPreferences sp = getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor e =sp.edit();
+        //simpan data ibu ke shared preference
+        SharedPreferences sp = getActivity().getSharedPreferences("datadata",Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = sp.edit();
         e.putString("dataibu",jsonpasien);
-        e.commit();
+        e.apply();
+        Log.d("PHP", "setDatapasien: dataibu "+jsonpasien);
     }
 
     public void UpdateData(){

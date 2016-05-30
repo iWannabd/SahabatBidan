@@ -50,6 +50,34 @@
         android:text="Jantung"
         android:id="@+id/jantung"/>
 
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:text="Penyakit seks menular"
+        android:id="@+id/pms"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:text="Malaria"
+        android:id="@+id/malaria"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:text="Kurang darah"
+        android:id="@+id/kurangdarah"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:text="TPC Paru"
+        android:id="@+id/tpcparu"/>
+
     <TextView
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
