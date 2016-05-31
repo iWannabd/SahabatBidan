@@ -355,11 +355,6 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (CheckBox) view.findViewById(R.id.sesaknapas),
                 (CheckBox) view.findViewById(R.id.nyeripinggang),
                 (CheckBox) view.findViewById(R.id.darah),
-                (CheckBox) view.findViewById(R.id.bengkakmuka),
-                (CheckBox) view.findViewById(R.id.kembar),
-                (CheckBox) view.findViewById(R.id.kembarair),
-                (CheckBox) view.findViewById(R.id.bayimati),
-                (CheckBox) view.findViewById(R.id.preklamasi),
 
         };
 
@@ -610,11 +605,6 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (CheckBox) view.findViewById(R.id.sesaknapas),
                 (CheckBox) view.findViewById(R.id.nyeripinggang),
                 (CheckBox) view.findViewById(R.id.darah),
-                (CheckBox) view.findViewById(R.id.bengkakmuka),
-                (CheckBox) view.findViewById(R.id.kembar),
-                (CheckBox) view.findViewById(R.id.kembarair),
-                (CheckBox) view.findViewById(R.id.bayimati),
-                (CheckBox) view.findViewById(R.id.preklamasi),
         };
 
         if (!json.equals("Belum menjalani pemeriksaan")){
