@@ -65,6 +65,7 @@ public class UploadDataRegistrasi extends AsyncTask<String[],Void,String> {
             }
             else {
                 edt.putString("SESSION_LOGIN",s);
+                edt.putBoolean("LOGGED",true);
                 edt.commit();
                 Intent utama = new Intent(activity,MainActivity.class);
                 utama.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -25,6 +25,34 @@
             android:entries="@array/keadaan_umum"
             />
 
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/default_text_color_holo_light"
+            android:text="Keadaan Khusus"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/keadaankhusus"
+            android:entries="@array/keadaan_khusus"
+            />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/default_text_color_holo_light"
+            android:text="Protenuri"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/potenuri"
+            android:entries="@array/protenuri"
+            />
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

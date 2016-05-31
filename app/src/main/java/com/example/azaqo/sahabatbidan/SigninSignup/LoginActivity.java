@@ -1,5 +1,8 @@
 package com.example.azaqo.sahabatbidan.SigninSignup;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.azaqo.sahabatbidan.MainActivity;
 import com.example.azaqo.sahabatbidan.R;
 
 public class LoginActivity extends AppCompatActivity implements PlaceholderFragmentLogin.ChangePage {
@@ -39,6 +43,12 @@ public class LoginActivity extends AppCompatActivity implements PlaceholderFragm
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        SharedPreferences sp = getSharedPreferences("Data Dasar", Context.MODE_PRIVATE);
+        if (sp.getBoolean("LOGGED",false)){
+            Intent ten = new Intent(this, MainActivity.class);
+            ten.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(ten);
+        }
 
     }
 

@@ -12,15 +12,14 @@
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+        android:id="@+id/btnDataIbu"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         card_view:cardBackgroundColor="#FFF"
         card_view:cardCornerRadius="4dp">
 
-    <ImageButton
-        android:id="@+id/btnDataIbu"
+    <ImageView
         android:background="@drawable/button_ibu"
         android:layout_width="75dp"
         android:layout_height="75dp"

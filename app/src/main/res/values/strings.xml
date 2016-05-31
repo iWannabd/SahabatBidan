@@ -15,6 +15,20 @@
         <item>Tampak Anemis</item>
     </string-array>
 
+    <string-array name="keadaan_khusus">
+        <item>Bengkak muka/tungkai</item>
+        <item>Kembar air</item>
+        <item>Kejang-kejang</item>
+    </string-array>
+
+    <string-array name="protenuri">
+        <item>tidak diperiksa</item>
+        <item>negatif</item>
+        <item>+1</item>
+        <item>+2</item>
+        <item>lebih dari +2</item>
+    </string-array>
+
     <string-array name="presentasi_janin">
         <item>Belum Terdeteksi</item>
         <item>Tidak Terdeteksi</item>

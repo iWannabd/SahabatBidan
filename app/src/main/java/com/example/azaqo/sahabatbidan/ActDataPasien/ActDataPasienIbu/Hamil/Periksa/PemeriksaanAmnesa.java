@@ -451,12 +451,14 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (Spinner) view.findViewById(R.id.goldar),
                 (Spinner) view.findViewById(R.id.prejanin),
                 (Spinner) view.findViewById(R.id.gerakjanin2jam),
+                (Spinner) view.findViewById(R.id.keadaankhusus),
+                (Spinner) view.findViewById(R.id.potenuri),
         };
 
         HashMap<String,String> data = new HashMap<>();
 
         String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran"};
-        String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin"};
+        String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin","keadaankhusus","proteinuri"};
 
         for (int i = 0; i < keyedt.length; i++) {
             if (!teksu[i].getText().toString().matches(""))
@@ -667,13 +669,15 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (Spinner) view.findViewById(R.id.goldar),
                 (Spinner) view.findViewById(R.id.prejanin),
                 (Spinner) view.findViewById(R.id.gerakjanin2jam),
+                (Spinner) view.findViewById(R.id.keadaankhusus),
+                (Spinner) view.findViewById(R.id.potenuri),
         };
 
         if (!json.equals("Belum menjalain pemeriksaan")){
             JSONObject dataperiksa = new JSONObject(json);
 
             String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran"};
-            String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin"};
+            String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin","keadaankhusus","proteinuri"};
 
             int i = 0;
             for (String k: keyedt) {
@@ -681,7 +685,6 @@ public class  PemeriksaanAmnesa extends Fragment {
                 teksu[i].setText(dataperiksa.getString(k));
                 i++;
             }
-
             i = 0;
             for (String k: kespin) {
                 spiners[i].setSelection(Integer.parseInt(dataperiksa.getString(k)));

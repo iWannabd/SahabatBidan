@@ -88,19 +88,6 @@ public class DataLengkapIbu extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void hapuspressed(String uname) {
-//        HashMap<String,String> send = new  HashMap<>();
-//        send.put("ke",uname+"");
-//        send.put("unameibu",usernameibu);
-//        new Request(send,"http://sahabatbundaku.org/request_android/hapus_kehamilan.php","tambah").execute();
-//        //refresh setelah hapus
-//        HashMap<String,String> send2 = new HashMap<>();
-//        send2.put("unameibu",usernameibu);
-//        new Request(send2,"http://sahabatbundaku.org/request_android/get_kehamilan.php","update").execute();
-//
-//    }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.

@@ -26,6 +26,34 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             />
+
+        <ImageView
+            android:background="@drawable/nurse"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="right" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/btnprofil"
+            android:layout_gravity="bottom"
+            android:textColor="#7f8c8d"
+            android:background="@android:color/transparent"
+            android:text="Profil"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/btnlogout"
+            android:layout_gravity="bottom"
+            android:textColor="#7f8c8d"
+            android:layout_marginLeft="90dp"
+            android:background="@android:color/transparent"
+            android:text="Logout"/>
+
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
