@@ -58,6 +58,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/kembar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Kembar (isi dengan 0 jika tidak kembar)"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
             <EditText android:id="@+id/suhutubuh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:hint="Tekanan Darah Sistol (Cm)"/>
+                android:hint="Tekanan Darah Sistol (mmHg)"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -86,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:hint="Tekanan Darah Diastol (mmHg)"/>
+                android:hint="Tekanan Darah Diastol (Cm)"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout

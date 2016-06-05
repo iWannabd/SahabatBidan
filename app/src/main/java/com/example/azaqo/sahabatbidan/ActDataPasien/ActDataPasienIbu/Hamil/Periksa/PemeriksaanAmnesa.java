@@ -439,6 +439,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (EditText) view.findViewById(R.id.hb),
                 (EditText) view.findViewById(R.id.jantungjanin),
                 (EditText) view.findViewById(R.id.saran),
+                (EditText) view.findViewById(R.id.kembar),
         };
 
         final Spinner spiners[] = {
@@ -452,7 +453,7 @@ public class  PemeriksaanAmnesa extends Fragment {
 
         HashMap<String,String> data = new HashMap<>();
 
-        String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran"};
+        String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran","kembar"};
         String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin","keadaankhusus","proteinuri"};
 
         for (int i = 0; i < keyedt.length; i++) {
@@ -465,6 +466,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         for (int i = 0; i < kespin.length; i++) {
             data.put(kespin[i],""+spiners[i].getSelectedItemPosition());
         }
+
 
         mListener.kumpulinData(data);
     }
@@ -652,6 +654,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (EditText) view.findViewById(R.id.hb),
                 (EditText) view.findViewById(R.id.jantungjanin),
                 (EditText) view.findViewById(R.id.saran),
+                (EditText) view.findViewById(R.id.kembar),
         };
 
         final Spinner spiners[] = {
@@ -666,7 +669,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         if (!json.equals("Belum menjalain pemeriksaan")){
             JSONObject dataperiksa = new JSONObject(json);
 
-            String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran"};
+            String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran","kembar"};
             String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin","keadaankhusus","proteinuri"};
 
             int i = 0;

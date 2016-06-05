@@ -84,8 +84,11 @@ public class ResumeActivity extends AppCompatActivity {
         TextView saran = (TextView) findViewById(R.id.sarann);
         assert saran != null;
         saran.setText(data.get("saran"));
-        //keadaan ibu
+        //preklammsi
 
+
+
+        //keadaan ibu
         try {
             Boolean low_risk = false;
             Boolean high_risk = false;
@@ -95,7 +98,7 @@ public class ResumeActivity extends AppCompatActivity {
             int hamilke = Integer.parseInt(data.get("hamilke"));
             int jarakhamil = Integer.parseInt(data.get("jarakhamil"));
             int jumlahlahir = Integer.parseInt(data.get("jumlahir"));
-            int tinggibadan = Integer.parseInt(data.get("tinggibadan"));
+            double tinggibadan = Double.parseDouble(data.get("tinggibadan"));
 
             String raw = data.get("riwayatpenyakit");
             raw = raw.substring(1, raw.length() - 1);
