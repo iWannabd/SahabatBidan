@@ -3,10 +3,9 @@ package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Peri
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
-import com.example.azaqo.sahabatbidan.HubunganAtas;
 import com.example.azaqo.sahabatbidan.R;
 import com.example.azaqo.sahabatbidan.RequestDatabase;
 
@@ -102,6 +100,9 @@ public class  PemeriksaanAmnesa extends Fragment {
             case 3:
                 view = inflater.inflate(R.layout.pemeriksaan_umum,container,false);
                 return periksaumum(view);
+            case 4:
+                view = inflater.inflate(R.layout.tindakan,container,false);
+                return periksatindakan(view);
             default:
                 return null;
         }
@@ -131,14 +132,16 @@ public class  PemeriksaanAmnesa extends Fragment {
             if(!isVisibleToUser){
                 switch (position){
                     case 0:
-                        simpan1(view);
+                        simpanriwayat(view);
                         break;
                     case 1:
-                        simpan2(view);
+                        simpanpenyakit(view);
                         break;
                     case 2:
-                        simpan3(view);
+                        simpankeluhan(view);
                         break;
+                    case 3:
+                        simpanperiksaumum(view);
                 }
             }
         }
@@ -149,7 +152,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         HashMap<String, String> getdata = new HashMap<>();
         if (!idpemeriksaan.equals("0")) {
             getdata.put("idpemeriksaan", idpemeriksaan);
-            new HubunganAtas(getdata, "http://sahabatbundaku.org/request_android/get_pemeriksaan.php", "loaddata", view, this).execute();
+            new Request(getdata,view,0).execute("http://sahabatbundaku.org/request_android/get_pemeriksaan.php");
         } else { //periksa baru maka untuk riwayat hamil menggunakan data lama
             getdata.put("idpemeriksaan", idpemeriksaanlama);
             new Request(getdata,view,0).execute("http://sahabatbundaku.org/request_android/get_pemeriksaan.php");
@@ -183,7 +186,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         return view;
     }
 
-    public void simpan1(View view){
+    public void simpanriwayat(View view){
         final EditText[] handler = {
                 ((EditText) view.findViewById(R.id.hpmt)),
                 ((EditText) view.findViewById(R.id.hamilke)),
@@ -239,7 +242,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         HashMap<String,String> getdata = new HashMap<>();
         if (!idpemeriksaan.equals("0")) {
             getdata.put("idpemeriksaan", idpemeriksaan);
-            new HubunganAtas(getdata, "http://sahabatbundaku.org/request_android/get_penyakit.php", "penyakit", view, this).execute();
+            new Request(getdata,view,1).execute("http://sahabatbundaku.org/request_android/get_penyakit.php");
         } else { //untuk riwayat penyakit harus menggunakan data lama untuk membuat data baru
             getdata.put("idpemeriksaan",idpemeriksaanlama);
             new Request(getdata,view,1).execute("http://sahabatbundaku.org/request_android/get_penyakit.php");
@@ -257,7 +260,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         return view;
     }
 
-    public void simpan2(View view){
+    public void simpanpenyakit(View view){
         final CheckBox[] penyakit = {
                 (CheckBox) view.findViewById(R.id.darahTinggi),
                 (CheckBox) view.findViewById(R.id.gula),
@@ -274,7 +277,6 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (CheckBox) view.findViewById(R.id.asmaturunan),
                 (CheckBox) view.findViewById(R.id.jantungturunan)
         };
-        final Spinner kontra = (Spinner) view.findViewById(R.id.kontra);
         final EditText[] imunisasi = {
                 (EditText) view.findViewById(R.id.tt1),
                 (EditText) view.findViewById(R.id.tt2),
@@ -288,6 +290,8 @@ public class  PemeriksaanAmnesa extends Fragment {
         for (int i = 0; i < key.length; i++) {
             data.put(key[i],imunisasi[i].getText().toString());
         }
+        final Spinner kontra = (Spinner) view.findViewById(R.id.kontra);
+
         //getting value of penyakit biasa
         ArrayList<Integer> penya = new ArrayList<>();
         for (int i = 0; i < penyakit.length; i++) {
@@ -310,8 +314,31 @@ public class  PemeriksaanAmnesa extends Fragment {
         //cek database dlu om
         HashMap<String,String> getdata = new HashMap<>();
         getdata.put("idpemeriksaan", idpemeriksaan);
-        new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_keluhan.php","keluhan",view,this).execute();
+        new Request(getdata,view,4).execute("http://sahabatbundaku.org/request_android/get_keluhan.php");
+        //highlight kehamilan sekarang
+        String tanggal = ActivityPemeriksaan.getDatapemeriksaanAll().get("hpmt");
+        if (!tanggal.equals("-1")) {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+            DateTime hpmt = formatter.parseDateTime(tanggal);
+            int usiakehamilan = Weeks.weeksBetween(hpmt, new DateTime()).getValue(0);
 
+            TextView tris;
+            if (usiakehamilan <= 14) {
+                tris = (TextView) view.findViewById(R.id.tri1);
+                tris.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                tris.setTextColor(Color.parseColor("#FFFFFF"));
+            }
+            if (usiakehamilan < 28 && usiakehamilan > 14) {
+                tris = (TextView) view.findViewById(R.id.tri2);
+                tris.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                tris.setTextColor(Color.parseColor("#FFFFFF"));
+            }
+            if (usiakehamilan >= 28) {
+                tris = (TextView) view.findViewById(R.id.tri3);
+                tris.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                tris.setTextColor(Color.parseColor("#FFFFFF"));
+            }
+        }
 
         Button submit = (Button) view.findViewById(R.id.btnSubmitKeluhan);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -323,7 +350,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         return view;
     }
 
-    public void simpan3(View view){
+    public void simpankeluhan(View view){
         final CheckBox tri1[] = {
                 (CheckBox) view.findViewById(R.id.mualmuntah),
                 (CheckBox) view.findViewById(R.id.susahbab),
@@ -382,19 +409,23 @@ public class  PemeriksaanAmnesa extends Fragment {
 
     }
 
-    public View periksaumum(final View view){
+    public View periksatindakan(final View view){
+        HashMap<String,String> req = new HashMap<>();
+        req.put("idpemeriksaan",idpemeriksaan);
+        new Request(req,view,3).execute("http://sahabatbundaku.org/request_android/get_tindakan.php");
 
-        //cek database dlu om
-        HashMap<String,String> getdata = new HashMap<>();
-        getdata.put("idpemeriksaan", idpemeriksaan);
-        new HubunganAtas(getdata,"http://sahabatbundaku.org/request_android/get_umum.php","umumperiksa",view,this).execute();
+
         Button but = (Button) view.findViewById(R.id.btnSubmitUmum);
         Button baru = (Button) view.findViewById(R.id.btnSubmitBaru);
 
         but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                simpan4(view);
+                simpantindak(view);
+                try {
+                    simpankesimpulan();
+                } catch (JSONException ignored) {
+                }
                 mListener.uploadData();
             }
         });
@@ -402,7 +433,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         baru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                simpan4(view);
+                simpantindak(view);
                 mListener.uploadDataBaru();
             }
         });
@@ -417,7 +448,7 @@ public class  PemeriksaanAmnesa extends Fragment {
         resume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                simpan4(view);
+                simpantindak(view);
                 Intent ten = new Intent(getActivity(),ResumeActivity.class);
                 ten.putExtra("datapemeriksaanAll",ActivityPemeriksaan.getDatapemeriksaanAll());
                 startActivity(ten);
@@ -427,7 +458,179 @@ public class  PemeriksaanAmnesa extends Fragment {
         return view;
     }
 
-    public void simpan4(View view){
+    private void simpankesimpulan() throws JSONException {
+        //masukkan datakesimpulan
+
+        HashMap<String,String> tampung = new HashMap<>();
+        HashMap<String,String> data = ActivityPemeriksaan.getDatapemeriksaanAll();
+
+        JSONObject dataibu = new JSONObject();
+        try {
+            SharedPreferences sp = getActivity().getSharedPreferences("datadata", Context.MODE_PRIVATE);
+            String json = sp.getString("dataibu","{}");
+            dataibu = new JSONObject(json);
+            Log.d("PHP", "onCreate: dataibu "+json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //usiakehamilan
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        DateTime hpmt = formatter.parseDateTime(data.get("hpmt"));
+        int usiahamil = Weeks.weeksBetween(hpmt,new DateTime()).getValue(0);
+        tampung.put("usiakehamilan",""+usiahamil);
+
+        //data data
+        int umur = Integer.parseInt(dataibu.getString("umur"));
+        int hamilke = Integer.parseInt(data.get("hamilke"));
+        int jarakhamil = Integer.parseInt(data.get("jarakhamil"));
+        int jumlahlahir = Integer.parseInt(data.get("jumlahir"));
+        double tinggibadan = Double.parseDouble(data.get("tinggibadan"));
+        String g = data.get("hamilke");
+        String p = data.get("jumlahir");
+        String raw = data.get("riwayatpenyakit");
+        raw = raw.substring(1, raw.length() - 1);
+        List<String> riwayatpenyakit = Arrays.asList(raw.split("\\s*,\\s*"));
+        String pre = data.get("presentasijanin");
+        pre = pre.substring(1, pre.length() - 1);
+        List<String> presentasijanin = Arrays.asList(pre.split("\\s*,\\s*"));
+        raw = data.get("tris3");
+        raw = raw.substring(1, raw.length() - 1);
+        List<String> tris3 = Arrays.asList(raw.split("\\s*,\\s*"));
+        double sistol = 0;
+        double diastol = 0;
+        int prek = -1; //-1 tidak terdeteksi, 0 preklamsi ringan, 1 preklamsi berat, 2 eklamsi
+
+        //preklamsi dan eklamsi
+        if (!data.get("tekdardiastol").equals("-1"))
+            sistol = Double.parseDouble(data.get("tekdardiastol"));
+        if (!data.get("tekdardiastol").equals("-1"))
+            diastol = Double.parseDouble(data.get("tekdardiastol"));
+        if (sistol > 0 && diastol > 0) {
+            //syarat untuk preklamsi ringan
+            if (sistol / diastol >= 140 / 90 && usiahamil > 20)
+                prek = 0;
+            if (data.get("proteinuri").equals("+1"))
+                prek = 0;
+            //syarat untuk preklamsi berat
+            if (sistol / diastol > 160 / 110 && usiahamil > 20)
+                prek = 1;
+            if (data.get("proteinuri").equals("4"))//lebih dari +2
+                prek = 1;
+            //kurang satu poin
+            //syarat untuk eklamsi
+            if (sistol >= 140 || diastol >= 90) {
+                if (usiahamil > 20)
+                    if (!data.get("proteinuri").equals("1")) //ada protein uri
+                        if (data.get("keadaankhusus").equals("3")) //kejang kejang
+                            prek = 2;
+            }
+        }
+
+
+        //resiko
+        Boolean low_risk = false;
+        Boolean high_risk = false;
+        Boolean very_high_risk = false;
+
+        // penentuan g p dan a
+        int gn = 0,pn = 0;
+        if (g.equals("-1")) g = "-";
+        else gn = Integer.parseInt(g);
+        if (p.equals("-1")) p = "-";
+        else pn = Integer.parseInt(p);
+        int an = gn - pn - 1;
+
+        if (umur<16) low_risk = true;
+        if (umur>35 && hamilke==1) low_risk = true;
+        if (jarakhamil<2 || jarakhamil<35) low_risk = true;
+        if (jumlahlahir>=4) low_risk = true;
+        if (umur>35) low_risk = true;
+        if (tinggibadan<=145) low_risk = true;
+        if (an>=1) low_risk = true; //pernah abortus
+        if (!data.get("vaccum").equals("-1")) low_risk = true; //pernah melahirkan vakum
+        if (!data.get("sesar").equals("-1")) low_risk = true; //pernah melahirkan sesar
+
+        if (riwayatpenyakit.contains("6")) high_risk = true; //kurang darah
+        if (riwayatpenyakit.contains("5")) high_risk = true; //malaria
+        if (riwayatpenyakit.contains("7")) high_risk = true; //tpc paru
+        if (riwayatpenyakit.contains("3")) high_risk = true; //jantung
+        if (riwayatpenyakit.contains("0")) high_risk = true; //darah tinggi
+        if (riwayatpenyakit.contains("1")) high_risk = true; //kencing manis atau diabetes
+        if (riwayatpenyakit.contains("4")) high_risk = true; //psm
+        if (usiahamil>42) high_risk = true; //lebih bulan
+        if (data.get("keadaankhusus").equals("2")) high_risk = true; //kembar air
+        if (presentasijanin.contains("3")) high_risk = true; //sungsang
+        if (presentasijanin.contains("2")) high_risk = true; //lintang
+
+        if (tris3.contains("15")) very_high_risk = true;
+        if (tris3.contains("10")) very_high_risk = true;
+        if (prek == 2) very_high_risk = true;
+
+        if (low_risk) tampung.put("resiko","Resiko rendah");
+        if (high_risk) tampung.put("resiko","Resiko tinggi");
+        if (very_high_risk) tampung.put("resiko","Resiko sangat tinggi");
+
+        mListener.kumpulinData(tampung);
+    }
+
+    public void simpantindak(View view){
+        CheckBox[] imunTT = {
+                (CheckBox) view.findViewById(R.id.imnuntt1),
+                (CheckBox) view.findViewById(R.id.imnuntt2),
+                (CheckBox) view.findViewById(R.id.imnuntt3),
+                (CheckBox) view.findViewById(R.id.imnuntt4),
+                (CheckBox) view.findViewById(R.id.imnuntt5),
+        };
+        EditText[] editTexts = {
+                (EditText) view.findViewById(R.id.imunlain),
+                (EditText) view.findViewById(R.id.tabletfe),
+                (EditText) view.findViewById(R.id.tindaklain),
+                (EditText) view.findViewById(R.id.saran),
+        };
+
+        HashMap<String,String> tampung = new HashMap<>();
+
+        List<Integer> pilihan = new ArrayList<>();
+        for (int i = 0; i < imunTT.length; i++) {
+            if (imunTT[i].isChecked()) pilihan.add(i);
+        }
+        tampung.put("imunTT",pilihan.toString());
+        tampung.put("imunLain",editTexts[0].getText().toString());
+        tampung.put("tindaklain",editTexts[2].getText().toString());
+        tampung.put("saran",editTexts[3].getText().toString());
+        if (!editTexts[1].getText().toString().equals(""))
+            tampung.put("tabletFE",editTexts[1].getText().toString());
+        else
+            tampung.put("tabletFE","-1");
+        mListener.kumpulinData(tampung);
+    }
+
+    public View periksaumum(View view){
+
+        //cek database dlu om
+
+        HashMap<String,String> getdata = new HashMap<>();
+        if (!idpemeriksaan.equals("0")) {
+            getdata.put("idpemeriksaan", idpemeriksaan);
+            new Request(getdata,view,5).execute("http://sahabatbundaku.org/request_android/get_umum.php");
+        } else {
+            getdata.put("idpemeriksaan",idpemeriksaanlama);
+            new Request(getdata,view,2).execute("http://sahabatbundaku.org/request_android/get_umum.php");
+        }
+
+        Button next = (Button) view.findViewById(R.id.btnSubmitTindak);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.geser();
+            }
+        });
+
+        return view;
+    }
+
+    public void simpanperiksaumum(View view){
         final EditText teksu[] = {
                 (EditText) view.findViewById(R.id.suhutubuh),
                 (EditText) view.findViewById(R.id.tekanandarahsistol),
@@ -438,23 +641,35 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (EditText) view.findViewById(R.id.tfu),
                 (EditText) view.findViewById(R.id.hb),
                 (EditText) view.findViewById(R.id.jantungjanin),
-                (EditText) view.findViewById(R.id.saran),
                 (EditText) view.findViewById(R.id.kembar),
+                (EditText) view.findViewById(R.id.lablain),
+                (EditText) view.findViewById(R.id.beratbadanlama),
         };
 
         final Spinner spiners[] = {
                 (Spinner) view.findViewById(R.id.keadaanumum),
                 (Spinner) view.findViewById(R.id.goldar),
-                (Spinner) view.findViewById(R.id.prejanin),
                 (Spinner) view.findViewById(R.id.gerakjanin2jam),
                 (Spinner) view.findViewById(R.id.keadaankhusus),
                 (Spinner) view.findViewById(R.id.potenuri),
+                (Spinner) view.findViewById(R.id.glukosa),
         };
 
-        HashMap<String,String> data = new HashMap<>();
+        final CheckBox[] posisijanins = {
+                (CheckBox) view.findViewById(R.id.belum),
+                (CheckBox) view.findViewById(R.id.tidak),
+                (CheckBox) view.findViewById(R.id.lintang),
+                (CheckBox) view.findViewById(R.id.sungsang),
+                (CheckBox) view.findViewById(R.id.punggungkiri),
+                (CheckBox) view.findViewById(R.id.punggungkanan),
+                (CheckBox) view.findViewById(R.id.kepalasudah),
+                (CheckBox) view.findViewById(R.id.kepalabelum),
+        };
 
-        String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran","kembar"};
-        String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin","keadaankhusus","proteinuri"};
+        String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","kembar","pemeriksaanlablain","beratbadanlama"};
+        String kespin[] = {"keadaanumum","goldar","gerakjanin","keadaankhusus","proteinuri","glukosa"};
+
+        HashMap<String,String> data = new HashMap<>();
 
         for (int i = 0; i < keyedt.length; i++) {
             if (!teksu[i].getText().toString().matches(""))
@@ -466,6 +681,13 @@ public class  PemeriksaanAmnesa extends Fragment {
         for (int i = 0; i < kespin.length; i++) {
             data.put(kespin[i],""+spiners[i].getSelectedItemPosition());
         }
+
+        //mendapatkan nilai untuk presentasi janin
+        List<Integer> checked = new ArrayList<>();
+        for (int i = 0; i < posisijanins.length; i++) {
+            if (posisijanins[i].isChecked()) checked.add(i);
+        }
+        data.put("presentasijanin",checked.toString());
 
 
         mListener.kumpulinData(data);
@@ -528,6 +750,7 @@ public class  PemeriksaanAmnesa extends Fragment {
                         (CheckBox) view.findViewById(R.id.gula),
                         (CheckBox) view.findViewById(R.id.asma),
                         (CheckBox) view.findViewById(R.id.jantung),
+                        (CheckBox) view.findViewById(R.id.pms),
                         (CheckBox) view.findViewById(R.id.malaria),
                         (CheckBox) view.findViewById(R.id.kurangdarah),
                         (CheckBox) view.findViewById(R.id.tpcparu),
@@ -538,7 +761,6 @@ public class  PemeriksaanAmnesa extends Fragment {
                         (CheckBox) view.findViewById(R.id.asmaturunan),
                         (CheckBox) view.findViewById(R.id.jantungturunan)
                 };
-                final Spinner kontra = (Spinner) view.findViewById(R.id.kontra);
                 final EditText[] imunisasi = {
                         (EditText) view.findViewById(R.id.tt1),
                         (EditText) view.findViewById(R.id.tt2),
@@ -547,12 +769,16 @@ public class  PemeriksaanAmnesa extends Fragment {
                         (EditText) view.findViewById(R.id.tt5),
                 };
                 String key[] = {"imunisasiTT1", "imunisasiTT2", "imunisasiTT3", "imunisasiTT4", "imunisasiTT5"};
+
                 for (int i = 0; i < imunisasi.length; i++) {
                     imunisasi[i].setText(dataperiksa.getString(key[i]));
                 }
+
+                final Spinner kontra = (Spinner) view.findViewById(R.id.kontra);
                 String raw = dataperiksa.getString("riwayatpenyakit");
                 raw = raw.substring(1, raw.length() - 1);
                 List<String> raww = Arrays.asList(raw.split("\\s*,\\s*"));
+                Log.d("PHP", "setRiwayatPenyakit: "+raww);
                 if (!raw.equals("")) {
                     for (String i : raww) {
                         penyakit[Integer.parseInt(i)].setChecked(true);
@@ -573,6 +799,7 @@ public class  PemeriksaanAmnesa extends Fragment {
             }
         }
     }
+
 
     public void setDataKeluahan(View view,String json) throws JSONException {
 
@@ -641,6 +868,39 @@ public class  PemeriksaanAmnesa extends Fragment {
             }
         }
     }
+
+    public void setDataTindakan(View view,String json) throws JSONException {
+        CheckBox[] imunTT = {
+                (CheckBox) view.findViewById(R.id.imnuntt1),
+                (CheckBox) view.findViewById(R.id.imnuntt2),
+                (CheckBox) view.findViewById(R.id.imnuntt3),
+                (CheckBox) view.findViewById(R.id.imnuntt4),
+                (CheckBox) view.findViewById(R.id.imnuntt5),
+        };
+        EditText[] editTexts = {
+                (EditText) view.findViewById(R.id.imunlain),
+                (EditText) view.findViewById(R.id.tabletfe),
+                (EditText) view.findViewById(R.id.tindaklain),
+                (EditText) view.findViewById(R.id.saran),
+        };
+
+        List<String> imu;
+        JSONObject data = new JSONObject(json);
+        String im = data.getString("imunTT");
+        im = im.substring(1,im.length()-1);
+        imu = Arrays.asList(im.split("\\s*,\\s*"));
+        if (!im.equals("")){
+            for (String i:imu) {
+                imunTT[Integer.parseInt(i)].setChecked(true);
+            }
+        }
+        editTexts[0].setText(data.getString("imunLain"));
+        editTexts[2].setText(data.getString("tindaklain"));
+        if (!data.getString("tabletFE").equals("-1")) editTexts[1].setText(data.getString("tabletFE"));
+        else editTexts[1].setText("");
+        editTexts[3].setText(data.getString("saran"));
+    }
+
     public void setDataPemeriksaanUmum(View view, String json) throws JSONException {
 
         final EditText teksu[] = {
@@ -653,24 +913,37 @@ public class  PemeriksaanAmnesa extends Fragment {
                 (EditText) view.findViewById(R.id.tfu),
                 (EditText) view.findViewById(R.id.hb),
                 (EditText) view.findViewById(R.id.jantungjanin),
-                (EditText) view.findViewById(R.id.saran),
                 (EditText) view.findViewById(R.id.kembar),
+                (EditText) view.findViewById(R.id.lablain),
+                (EditText) view.findViewById(R.id.beratbadanlama),
         };
 
         final Spinner spiners[] = {
                 (Spinner) view.findViewById(R.id.keadaanumum),
                 (Spinner) view.findViewById(R.id.goldar),
-                (Spinner) view.findViewById(R.id.prejanin),
                 (Spinner) view.findViewById(R.id.gerakjanin2jam),
                 (Spinner) view.findViewById(R.id.keadaankhusus),
                 (Spinner) view.findViewById(R.id.potenuri),
+                (Spinner) view.findViewById(R.id.glukosa),
         };
+
+        final CheckBox[] posisijanins = {
+                (CheckBox) view.findViewById(R.id.belum),
+                (CheckBox) view.findViewById(R.id.tidak),
+                (CheckBox) view.findViewById(R.id.lintang),
+                (CheckBox) view.findViewById(R.id.sungsang),
+                (CheckBox) view.findViewById(R.id.punggungkiri),
+                (CheckBox) view.findViewById(R.id.punggungkanan),
+                (CheckBox) view.findViewById(R.id.kepalasudah),
+                (CheckBox) view.findViewById(R.id.kepalabelum),
+        };
+
 
         if (!json.equals("Belum menjalain pemeriksaan")){
             JSONObject dataperiksa = new JSONObject(json);
 
-            String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","saran","kembar"};
-            String kespin[] = {"keadaanumum","goldar","presentasijanin","gerakjanin","keadaankhusus","proteinuri"};
+            String keyedt[] = {"suhutubuh","tekdarsistol","tekdardiastol","beratbadan","tinggibadan","lila","tfu","pemeriksaanhb","detakjantungjanin","kembar","pemeriksaanlablain","beratbadanlama"};
+            String kespin[] = {"keadaanumum","goldar","gerakjanin","keadaankhusus","proteinuri","glukosa"};
 
             int i = 0;
             for (String k: keyedt) {
@@ -683,7 +956,22 @@ public class  PemeriksaanAmnesa extends Fragment {
                 spiners[i].setSelection(Integer.parseInt(dataperiksa.getString(k)));
                 i++;
             }
+            //setting value for presentasi janin
+            String pre = dataperiksa.getString("presentasijanin");
+            pre = pre.substring(1, pre.length() - 1);
+            List<String> raww = Arrays.asList(pre.split("\\s*,\\s*"));
+            if (!pre.equals("")) {
+                for (String ii : raww) {
+                    posisijanins[Integer.parseInt(ii)].setChecked(true);
+                }
+            }
+
         }
+    }
+    public void setberatbadansebelumhami(View view,String json) throws JSONException {
+        EditText lama = (EditText) view.findViewById(R.id.beratbadanlama);
+        JSONObject data = new JSONObject(json);
+        lama.setText(data.getString("beratbadanlama"));
     }
     public class Request extends RequestDatabase{
         View view;
@@ -702,10 +990,24 @@ public class  PemeriksaanAmnesa extends Fragment {
                 switch (flag){
                     case 0: //riwayat hamil
                         setDataRiwayatHamil(view,s);
+                        break;
                     case 1:
                         setRiwayatPenyakit(view,s);
+                        break;
+                    case 2:
+                        setberatbadansebelumhami(view,s);
+                        break;
+                    case 3:
+                        setDataTindakan(view,s);
+                        break;
+                    case 4:
+                        setDataKeluahan(view,s);
+                        break;
+                    case 5:
+                        setDataPemeriksaanUmum(view,s);
                 }
             } catch (JSONException e) {
+                Log.d("PHP", "onPostExecute request pemeriksaan: "+s);
                 e.printStackTrace();
             }
         }

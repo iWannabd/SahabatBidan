@@ -1,9 +1,14 @@
 package com.example.azaqo.sahabatbidan;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,8 +57,22 @@ public class Okdeh {
                 .url(url)
                 .post(febs)
                 .build();
-
+        final String[] nilaibalik = new String[1];
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (!response.isSuccessful()) nilaibalik[0] = "Terjadi kesalahan koneksi, kode "+response;
+//                else nilaibalik[0] = response.body().string();
+//            }
+//        });
         Response response = client.newCall(request).execute();
+
         return response.body().string();
     }
+
 }

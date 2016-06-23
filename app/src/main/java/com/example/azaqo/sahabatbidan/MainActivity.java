@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        CardView reminder = (CardView) findViewById(R.id.card_reminder);
         CardView dataibu = (CardView) findViewById(R.id.card_view2);
         TextView sambut = (TextView) findViewById(R.id.sambut);
         SharedPreferences sp = getSharedPreferences("Data Dasar",MODE_PRIVATE);
@@ -53,7 +54,18 @@ public class MainActivity extends AppCompatActivity {
         dataibu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getBaseContext(),DataIbuatauAnak.class));
+                Intent ten = new Intent(getBaseContext(),DataIbuatauAnak.class);
+                ten.putExtra("pilihan",0);
+                startActivity(ten);
+            }
+        });
+
+        reminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent ten = new Intent(getBaseContext(),DataIbuatauAnak.class);
+                ten.putExtra("pilihan",1);
+                startActivity(ten);
             }
         });
     }

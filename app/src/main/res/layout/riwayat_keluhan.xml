@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
+            android:id="@+id/tri1"
             android:text="KELUHAN TRISEMESTER 1"/>
         <View
             android:layout_width="match_parent"
@@ -69,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
+            android:id="@+id/tri2"
             android:text="KELUHAN TRISEMESTER 2"/>
         <View
             android:layout_width="match_parent"
@@ -129,6 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
+            android:id="@+id/tri3"
             android:text="KELUHAN TRISEMESTER 3"/>
         <View
             android:layout_width="match_parent"

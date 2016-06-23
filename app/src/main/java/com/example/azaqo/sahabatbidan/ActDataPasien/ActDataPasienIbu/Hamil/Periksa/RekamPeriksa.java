@@ -1,23 +1,29 @@
 package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.Periksa;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.azaqo.sahabatbidan.ActDataPasien.HapusDialog;
+import com.example.azaqo.sahabatbidan.MainActivity;
 import com.example.azaqo.sahabatbidan.Okdeh;
 import com.example.azaqo.sahabatbidan.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,11 +43,42 @@ public class RekamPeriksa extends AppCompatActivity implements HapusDialog.ApaYa
         Intent intent = getIntent();
         idkehamilan = intent.getStringExtra("idkehamilan");
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         HashMap<String,String> send = new HashMap<String,String>();
         send.put("idkehamilan",idkehamilan);
         new Request(send).execute("http://sahabatbundaku.org/request_android/get_record_pemeriksaan.php");
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_data_lengkap_ibu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.home){
+            Intent ten = new Intent(this,MainActivity.class);
+            ten.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(ten);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     String selectedidpemeriksaan = "0";
     public void setData(String jsonstring) {
         List<String> tanggaltanggal = new ArrayList<>();
@@ -57,9 +94,10 @@ public class RekamPeriksa extends AppCompatActivity implements HapusDialog.ApaYa
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
                         Intent ten = new Intent(getBaseContext(),ActivityPemeriksaan.class);
-                        String selectedid = jsonArray.getJSONObject(position).getString("idpemeriksaan");
+                        JSONObject obj = jsonArray.getJSONObject(position);
                         ten.putExtra("idkehamilan",idkehamilan);
-                        ten.putExtra("idpemeriksaan",selectedid);
+                        ten.putExtra("idpemeriksaan",obj.getString("idpemeriksaan"));
+                        ten.putExtra("tanggalperiksa",obj.getString("tanggalperiksa"));
                         startActivity(ten);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -86,14 +124,15 @@ public class RekamPeriksa extends AppCompatActivity implements HapusDialog.ApaYa
                 public void onClick(View v) {
                     Intent ten = new Intent(getBaseContext(),ActivityPemeriksaan.class);
                     ten.putExtra("idkehamilan",idkehamilan);
-                    ten.putExtra("idpemeriksaan","0");
+                    ten.putExtra("idpemeriksaan","0"); //artinya isi form dari awal
                     try {
                         String idpemeriksaanterbaru = jsonArray.getJSONObject(0).getString("idpemeriksaan");
                         ten.putExtra("idpemeriksaanterbaru",idpemeriksaanterbaru);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    startActivity(ten);
+                    startActivityForResult(ten,1);
+//                    startActivity(ten);
                 }
             });
         } catch (JSONException e) {
@@ -111,9 +150,18 @@ public class RekamPeriksa extends AppCompatActivity implements HapusDialog.ApaYa
                     startActivity(ten);
                 }
             });
-
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+                HashMap<String,String> send = new HashMap<String,String>();
+                send.put("idkehamilan",idkehamilan);
+                new Request(send).execute("http://sahabatbundaku.org/request_android/get_record_pemeriksaan.php");
+            }
+        }
     }
 
     @Override
@@ -147,9 +195,9 @@ public class RekamPeriksa extends AppCompatActivity implements HapusDialog.ApaYa
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("PHP", "onPostExecute: rekam periksa "+s);
             setData(s);
-
         }
+
+
     }
 }

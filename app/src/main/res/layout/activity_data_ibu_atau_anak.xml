@@ -57,7 +57,7 @@
             android:layout_gravity="right"/>
 
         <TextView
-            android:text="Data Ibu"
+            android:text="Data Anak"
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/kartu"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama"
+                android:id="@+id/nama"
+                style="@style/Base.TextAppearance.AppCompat.Headline"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="risk"
+                android:layout_below="@+id/nama"
+                android:id="@+id/risk"
+                android:layout_alignParentLeft="true"
+                style="@style/Base.TextAppearance.AppCompat.Medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="post-term"
+                android:layout_below="@+id/risk"
+                android:id="@+id/term"
+                style="@style/Base.TextAppearance.AppCompat.Medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kunjungan"
+                android:layout_below="@+id/term"
+                android:id="@+id/kunjungan"
+                style="@style/Base.TextAppearance.AppCompat.Medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/doordone"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="DROPOUT"
+                android:paddingTop="16dp"
+                android:id="@+id/dropout"
+                android:textColor="@color/colorAccent"
+                android:layout_below="@+id/kunjungan"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="MELAHIRKAN"
+                android:id="@+id/melahirkan"
+                android:textColor="@color/colorAccent"
+                android:layout_below="@+id/kunjungan"
+                android:paddingRight="16dp"
+                android:layout_toLeftOf="@+id/dropout"
+                android:layout_toStartOf="@+id/dropout" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

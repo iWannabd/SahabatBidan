@@ -16,10 +16,18 @@
     </string-array>
 
     <string-array name="keadaan_khusus">
+        <item>Tidak ada</item>
         <item>Bengkak muka/tungkai</item>
         <item>Kembar air</item>
         <item>Kejang-kejang</item>
     </string-array>
+
+    <string-array name="glukosa">
+        <item>Tidak diperiksa</item>
+        <item>Reduksi +</item>
+        <item>Reduksi -</item>
+    </string-array>
+
 
     <string-array name="protenuri">
         <item>tidak diperiksa</item>
@@ -37,9 +45,12 @@
         <item>Punggung Kiri</item>
         <item>Punggung Kanan</item>
         <item>Kepala</item>
+        <item>kepala belum masuk pintu atas panggul</item>
+        <item>kepala sudah masuk pintu atas panggu</item>
     </string-array>
 
     <string-array name="gerak_janin">
+        <item>Belum Terdeteksi</item>
         <item>Tidak Terdeteksi</item>
         <item>kurang dari 4 kali</item>
         <item>antara 4 hingga 10 kali</item>
@@ -91,7 +102,43 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+
+    <string-array name="yesno">
+        <item>-</item>
+        <item>Ya</item>
+        <item>Tidak</item>
+    </string-array>
+
+    <string-array name="keaibu">
+        <item>-</item>
+        <item>Normal</item>
+        <item>Pendarahan</item>
+        <item>Meninggal</item>
+    </string-array>
+
+    <string-array name="keabayi">
+        <item>-</item>
+        <item>Lahir</item>
+        <item>Meninggal</item>
+    </string-array>
+
+    <string-array name="stat">
+        <item>-</item>
+        <item>Preterm</item>
+        <item>Aterm</item>
+        <item>Postterm</item>
+    </string-array>
+
+    <string-array name="carapersalinan">
+        <item>-</item>
+        <item>Normal</item>
+        <item>Sesar</item>
+        <item>Vakum</item>
+        <item>Lainnya</item>
+    </string-array>
+
     <string name="title_activity_data_pasiens">Data Pasien</string>
     <string name="title_activity_datadata_kehamilan">Data Kehamilan</string>
     <string name="title_activity_data_lengkap_ibu">DataLengkapIbu</string>
+    <string name="title_activity_reminder">Reminder</string>
 </resources>

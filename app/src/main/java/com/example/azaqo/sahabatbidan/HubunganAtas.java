@@ -24,7 +24,6 @@ import java.util.HashMap;
  * kelas ini digunakan oleh beberapa kelas lain untuk melakukan http request
  */
 public class HubunganAtas extends AsyncTask<String[],Void,Void> {
-    Activity act;
     DataLengkapIbu dataLengkapIbu;
     DaftarKehamilanFragment datadataKehamilan;
     DataPasiens dataPasiens;

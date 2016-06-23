@@ -39,20 +39,6 @@
             android:entries="@array/keadaan_khusus"
             />
 
-        <TextView
-            android:layout_marginTop="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/default_text_color_holo_light"
-            android:text="Protenuri"/>
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/potenuri"
-            android:entries="@array/protenuri"
-            />
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:hint="Kembar (isi dengan 0 jika tidak kembar)"/>
+                android:hint="Jumlah janin"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -106,11 +92,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/beratbadanlama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="Berat Badan Sebelum Hamil (Kg)"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
             <EditText android:id="@+id/beratbadan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:hint="Berat Badan (Kg)"/>
+                android:hint="Berat Badan Saat Ini (Kg)"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -150,18 +148,6 @@
                 android:hint="TFU (Cm)(Kopsongkan jika belum terukur)"/>
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/hb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:hint="Pemeriksaan Hb"/>
-        </android.support.design.widget.TextInputLayout>
-
         <TextView
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
@@ -183,12 +169,63 @@
             android:textColor="@color/default_text_color_holo_light"
             android:text="Presentasi Janin"/>
 
-        <Spinner
+        <CheckBox
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/prejanin"
-            android:entries="@array/presentasi_janin"
-            />
+            android:layout_marginTop="5dp"
+            android:text="Belum Terdeteksi"
+            android:id="@+id/belum"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Tidak Terdeteksi"
+            android:id="@+id/tidak"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Lintang"
+            android:id="@+id/lintang"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Sungsang"
+            android:id="@+id/sungsang"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Punggung Kiri"
+            android:id="@+id/punggungkiri"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Punggung kanan"
+            android:id="@+id/punggungkanan"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Kepala belum masuk pintu atas panggul"
+            android:id="@+id/kepalasudah"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:text="Kepala sudah masuk pintu atas panggul"
+            android:id="@+id/kepalabelum"/>
+
+
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -216,50 +253,80 @@
             android:entries="@array/gerak_janin"
             />
 
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="PEMERIKSAAN LABORATORIUM"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/default_text_color_holo_light"
+            android:text="Protenuri"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/potenuri"
+            android:entries="@array/protenuri"
+            />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/default_text_color_holo_light"
+            android:text="Glukosa"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/glukosa"
+            android:entries="@array/glukosa"
+            />
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/saran"
+            <EditText android:id="@+id/hb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="Pemeriksaan Hb (gr/dl)"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/lablain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Saran"/>
+                android:hint="Pemeriksaan lainnya"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnSubmitUmum"
+            android:id="@+id/btnSubmitTindak"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Update"
+            android:text="Lanjut"
             android:background="@color/colorAccent"
             android:textColor="#fff"/>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnSubmitBaru"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:text="Submit"
-            android:background="@color/colorAccent"
-            android:textColor="#fff"/>
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnResume"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:text="Lihat Resume"
-            android:background="@color/colorAccent"
-            android:textColor="#fff"/>
 
     </LinearLayout>
 </ScrollView>

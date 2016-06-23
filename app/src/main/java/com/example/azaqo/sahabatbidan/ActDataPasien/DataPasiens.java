@@ -29,6 +29,7 @@ import android.widget.SimpleAdapter;
 
 import com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil.DataLengkapIbu;
 import com.example.azaqo.sahabatbidan.HubunganAtas;
+import com.example.azaqo.sahabatbidan.MainActivity;
 import com.example.azaqo.sahabatbidan.R;
 
 import org.json.JSONArray;
@@ -126,6 +127,12 @@ public class DataPasiens extends AppCompatActivity implements PairingDialog.Noti
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.home) {
+            Intent ten = new Intent(this,MainActivity.class);
+            ten.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(ten);
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,5 +1,6 @@
 package com.example.azaqo.sahabatbidan.ActDataPasien.ActDataPasienIbu.Hamil;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.azaqo.sahabatbidan.ActDataPasien.DataPasiens;
 import com.example.azaqo.sahabatbidan.HubunganAtas;
+import com.example.azaqo.sahabatbidan.MainActivity;
 import com.example.azaqo.sahabatbidan.Okdeh;
 import com.example.azaqo.sahabatbidan.R;
 import com.example.azaqo.sahabatbidan.ActDataPasien.HapusDialog;
@@ -49,8 +51,8 @@ public class DataLengkapIbu extends AppCompatActivity
 
         usernameibu = getIntent().getStringExtra("unameibu");
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -83,6 +85,11 @@ public class DataLengkapIbu extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.home){
+            Intent ten = new Intent(this,MainActivity.class);
+            ten.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(ten);
         }
 
         return super.onOptionsItemSelected(item);
