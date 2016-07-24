@@ -20,11 +20,18 @@ import android.widget.Toast;
 import com.example.azaqo.sahabatbidan.R;
 import com.example.azaqo.sahabatbidan.RequestDatabase;
 
+import org.joda.time.DateTime;
+import org.joda.time.Weeks;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,7 +109,7 @@ public class ReminderActivity extends AppCompatActivity {
 
     List<ReminderCard> reminderCards = new ArrayList<>();
 
-    protected void setRecyclerViewData(String jsonarray) throws JSONException {
+    protected void setRecyclerViewData(String jsonarray) throws JSONException, ParseException {
         recyclerView = (RecyclerView) findViewById(R.id.recyclePiew);
         recyclerView.setHasFixedSize(true);
 
@@ -110,10 +117,12 @@ public class ReminderActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(llm);
 
         JSONArray jsonreminders = new JSONArray(jsonarray);
-
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for (int i = 0; i < jsonreminders.length(); i++) {
             JSONObject jobj = jsonreminders.getJSONObject(i);
-            int usiahamil = Integer.parseInt(jobj.getString("usiakehamilan"));
+            DateTime hpmt = fmt.parseDateTime(jobj.getString("hpmt"));
+            int usiahamil = Weeks.weeksBetween(hpmt, new DateTime()).getWeeks();
             int jumkunjung = Integer.parseInt(jobj.getString("jumlahkunjungan"));
             int selesai = Integer.parseInt(jobj.getString("selesai"));
             int dropout = Integer.parseInt(jobj.getString("dropout"));
@@ -276,7 +285,7 @@ public class ReminderActivity extends AppCompatActivity {
             Log.d("PHP", "onPostExecute: \n "+s);
             try {
                 setRecyclerViewData(s);
-            } catch (JSONException e) {
+            } catch (JSONException|ParseException e) {
                 Toast.makeText(getBaseContext(),s,Toast.LENGTH_LONG).show();
             }
             dagoan.dismiss();
